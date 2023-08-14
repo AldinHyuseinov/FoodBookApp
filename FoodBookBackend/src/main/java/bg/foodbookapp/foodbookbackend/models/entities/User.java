@@ -2,14 +2,14 @@ package bg.foodbookapp.foodbookbackend.models.entities;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
-@NoArgsConstructor
 @Getter
 @Setter
 public class User extends BaseEntity {
@@ -35,4 +35,11 @@ public class User extends BaseEntity {
 
     @ManyToOne(optional = false)
     private UserRole role;
+
+    @OneToMany
+    private List<Recipe> favouriteRecipes;
+
+    public User() {
+        this.favouriteRecipes = new ArrayList<>();
+    }
 }

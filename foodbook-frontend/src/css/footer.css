@@ -1,0 +1,11 @@
+footer {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    padding: 1rem;
+}
+
+footer p {
+    width: 33ch;
+}

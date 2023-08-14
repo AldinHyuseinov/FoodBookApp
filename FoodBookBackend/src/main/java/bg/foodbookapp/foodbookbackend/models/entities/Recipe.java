@@ -1,12 +1,10 @@
 package bg.foodbookapp.foodbookbackend.models.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,10 +42,20 @@ public class Recipe extends BaseEntity {
     @OneToMany
     private List<Review> reviews;
 
+    @ManyToOne
+    private User addedByUser;
+
+    @OneToMany
+    private List<Tag> tags;
+
+    @Column(nullable = false)
+    private LocalDateTime dateAdded;
+
     public Recipe() {
         this.ingredients = new ArrayList<>();
         this.directions = new ArrayList<>();
         this.notes = new ArrayList<>();
         this.reviews = new ArrayList<>();
+        this.tags = new ArrayList<>();
     }
 }
