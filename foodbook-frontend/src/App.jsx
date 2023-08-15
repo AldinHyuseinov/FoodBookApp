@@ -5,6 +5,9 @@ import Loading from "./components/Loading";
 import Footer from "./components/Footer";
 
 const HomePage = lazy(() => import("./pages/Home"));
+const LoginPage = lazy(() => import("./pages/Login"));
+const RegisterPage = lazy(() => import("./pages/Register"));
+const ErrorPage = lazy(() => import("./pages/Error"));
 
 function App() {
   return (
@@ -14,6 +17,9 @@ function App() {
         <Suspense fallback={<Loading />}>
           <Routes>
             <Route index element={<HomePage />} />
+            <Route path="/auth/login" element={<LoginPage />} />
+            <Route path="/auth/register" element={<RegisterPage />} />
+            <Route path="*" element={<ErrorPage />} />
           </Routes>
         </Suspense>
       </BrowserRouter>

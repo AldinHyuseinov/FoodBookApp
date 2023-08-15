@@ -1,0 +1,21 @@
+main {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  justify-items: center;
+}
+
+.join-link {
+  display: inline;
+  text-decoration: underline;
+}
+
+.join-link:hover {
+  text-decoration-thickness: 0.1em;
+}
+
+@media (width <= 642px) {
+  main {
+    grid-template-columns: 1fr;
+  }
+}

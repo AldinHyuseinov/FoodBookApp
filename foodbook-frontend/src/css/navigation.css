@@ -1,0 +1,104 @@
+a {
+  display: block;
+  text-decoration: none;
+  color: #000;
+}
+
+li {
+  display: block;
+}
+
+.user svg {
+  border-radius: 50%;
+  background-color: orange;
+  fill: #fff;
+  height: 1.2em;
+  width: 1.5em;
+  padding: 0.1em;
+}
+
+.user a {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.user p {
+  padding: 0;
+}
+
+.icon {
+  padding: 0;
+  margin-top: 0.3em;
+  fill: #fff;
+}
+
+.branding {
+  width: 8em;
+  padding-inline: 4.4em;
+  text-align: center;
+  border-radius: 50%;
+  background-color: orange;
+}
+
+.branding div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.branding .title {
+  color: #fff;
+  padding: 0.5em;
+}
+
+.branding .title span {
+  color: rgb(73, 73, 73);
+}
+
+.site-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  padding: 1em;
+}
+
+.main-nav .nav {
+  display: flex;
+  gap: 2em;
+}
+
+.main-nav .nav li {
+  position: relative;
+  padding: 0.5em;
+  text-align: center;
+}
+
+li ul {
+  position: absolute;
+  left: 0.2em;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5em;
+  background-color: #fff;
+  box-shadow: 0 0 1em rgba(0, 0, 0, 0.25);
+  width: 100%;
+}
+
+li ul li {
+  display: none;
+}
+
+.main-nav ul li:hover {
+  text-decoration: underline orange;
+}
+
+.main-nav ul li:hover ul li {
+  display: block;
+}
+
+.main-nav ul li:hover ul li:hover {
+  text-decoration: underline orange;
+}

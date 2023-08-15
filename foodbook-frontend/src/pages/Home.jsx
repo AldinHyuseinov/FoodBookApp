@@ -1,4 +1,4 @@
-function HomePage() {
+export default function HomePage() {
   //Todo:
   return (
     <main>

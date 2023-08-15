@@ -1,0 +1,26 @@
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1em;
+}
+
+input {
+  border-radius: 0.5em;
+  border: 1px solid gray;
+  padding: 0.5em;
+}
+
+button {
+  padding: 0.5em;
+  margin-bottom: 1.5em;
+  border-radius: 0.5em;
+  border: 1px solid gray;
+  width: 5.5em;
+  background-color: orange;
+}
+
+.form-input {
+  display: flex;
+  flex-direction: column;
+}
