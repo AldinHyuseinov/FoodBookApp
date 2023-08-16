@@ -34,6 +34,7 @@ dependencies {
     testImplementation("org.springframework.security:spring-security-test")
     implementation("io.jsonwebtoken:jjwt:0.9.1")
     implementation("org.modelmapper:modelmapper:3.0.0")
+    implementation("javax.xml.bind:jaxb-api:2.3.1")
 }
 
 tasks.withType<Test> {

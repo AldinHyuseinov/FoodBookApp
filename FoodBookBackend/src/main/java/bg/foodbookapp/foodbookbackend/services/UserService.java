@@ -1,11 +1,13 @@
 package bg.foodbookapp.foodbookbackend.services;
 
+import bg.foodbookapp.foodbookbackend.models.dto.RegisterUserDTO;
 import bg.foodbookapp.foodbookbackend.models.entities.User;
 import bg.foodbookapp.foodbookbackend.models.enums.Role;
 import bg.foodbookapp.foodbookbackend.repositories.UserRepository;
 import bg.foodbookapp.foodbookbackend.repositories.UserRoleRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,8 @@ public class UserService {
     private final UserRoleRepository userRoleRepository;
 
     private final PasswordEncoder passwordEncoder;
+
+    private final ModelMapper mapper;
 
     @PostConstruct
     private void initUsers() {
@@ -39,5 +43,13 @@ public class UserService {
         user.setRole(userRoleRepository.findUserRoleByRole(Role.USER));
 
         userRepository.saveAll(List.of(admin, user));
+    }
+
+    public void registerUser(RegisterUserDTO registerUserDTO) {
+        User user = mapper.map(registerUserDTO, User.class);
+        user.setPassword(passwordEncoder.encode(registerUserDTO.getPassword()));
+        user.setRole(userRoleRepository.findUserRoleByRole(Role.USER));
+
+        userRepository.save(user);
     }
 }
