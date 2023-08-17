@@ -39,7 +39,18 @@ export async function registerUser(email, password) {
 }
 
 export function getUserData() {
-  return JSON.parse(localStorage.getItem("userData"));
+  const userData = JSON.parse(localStorage.getItem("userData"));
+
+  if (userData) {
+    const tokenExpirationDate = new Date(userData.tokenExpiration);
+    const dateNow = new Date();
+
+    if (dateNow >= tokenExpirationDate) {
+      return null;
+    }
+  }
+
+  return userData;
 }
 
 export function setUserData(data) {

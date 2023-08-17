@@ -1,0 +1,16 @@
+h1 {
+  text-align: center;
+}
+
+.cards {
+  display: flex;
+  justify-content: center;
+}
+
+.media {
+  width: 50%;
+}
+
+.tag {
+  padding: 0.5em 0 0.5em;
+}

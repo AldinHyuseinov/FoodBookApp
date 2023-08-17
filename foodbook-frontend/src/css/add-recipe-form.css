@@ -1,0 +1,34 @@
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.recipe-header h1,
+.recipe-header p {
+  text-align: center;
+}
+
+.recipe-header p {
+  max-width: 65ch;
+}
+
+.form-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5em;
+  padding: 2em;
+  border: none;
+  border-top: 1px solid gray;
+  border-bottom: 1px solid gray;
+}
+
+.inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5em;
+}
+
+#photo::file-selector-button {
+  display: none;
+}

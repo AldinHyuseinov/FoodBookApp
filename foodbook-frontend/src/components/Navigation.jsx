@@ -1,9 +1,6 @@
-import { useState } from "react";
-import { clearUserData, getUserData } from "../services/userService";
+import { clearUserData } from "../services/userService";
 
-export default function Navbar() {
-  const [isLoggedIn, setLoggedIn] = useState(getUserData() ? true : false);
-
+export default function Navbar({ isLoggedIn, setLoggedIn }) {
   const handleLogout = () => {
     clearUserData();
     setLoggedIn(false);
@@ -93,7 +90,7 @@ export default function Navbar() {
                   <a href="#">My Profile</a>
                 </li>
                 <li>
-                  <a href="#">Add Recipe</a>
+                  <a href="/recipes/add">Add Recipe</a>
                 </li>
               </ul>
             </li>

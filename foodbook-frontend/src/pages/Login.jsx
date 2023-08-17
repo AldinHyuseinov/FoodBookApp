@@ -1,6 +1,7 @@
 import Image from "../components/AuthImage";
 import Form from "../components/Form";
 import "../css/auth-page.css";
+import "../css/auth-form.css";
 import "../css/form.css";
 
 export default function LoginPage() {

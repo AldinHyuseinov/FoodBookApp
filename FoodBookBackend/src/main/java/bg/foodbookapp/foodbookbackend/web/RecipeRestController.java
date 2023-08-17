@@ -17,7 +17,7 @@ import java.util.List;
 public class RecipeRestController {
     private final RecipeService recipeService;
 
-    @GetMapping("/all")
+    @GetMapping
     public ResponseEntity<List<RecipeDTO>> allRecipes() {
         return ResponseEntity.ok(recipeService.getAllRecipes());
     }

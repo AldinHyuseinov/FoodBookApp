@@ -1,0 +1,28 @@
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1em;
+}
+
+button[type="submit"] {
+  padding: 0.5em;
+  margin-bottom: 1.5em;
+  border-radius: 0.5em;
+  border: 1px solid gray;
+  width: 5.5em;
+  background-color: orange;
+}
+
+.password-field {
+  position: relative;
+}
+
+.form-input button {
+  position: absolute;
+  right: 0.2em;
+  margin-top: 0.6em;
+  margin-right: 0.2em;
+  border: none;
+  background-color: #fff;
+}

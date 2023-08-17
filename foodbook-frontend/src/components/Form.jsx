@@ -20,6 +20,7 @@ export default function Form({ title, buttonLabel, children }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    e.target.disabled = true;
 
     if (title === "Log in") {
       try {
@@ -29,6 +30,7 @@ export default function Form({ title, buttonLabel, children }) {
       } catch (err) {
         setError(true);
         setErrorMessage("Invalid username or password.");
+        e.target.disabled = false;
       }
       clearFields([email.current, password.current]);
       return;
@@ -41,12 +43,13 @@ export default function Form({ title, buttonLabel, children }) {
     } catch (err) {
       setError(true);
       setErrorMessage(err.message);
+      e.target.disabled = false;
     }
     clearFields([email.current, password.current]);
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form>
       <h1>{title}</h1>
       {error && <ErrorMessage message={errorMessage} />}
       <div className="form-input">
@@ -69,7 +72,9 @@ export default function Form({ title, buttonLabel, children }) {
         </div>
       </div>
 
-      <button type="submit">{buttonLabel}</button>
+      <button type="submit" onClick={handleSubmit}>
+        {buttonLabel}
+      </button>
 
       {children}
     </form>
