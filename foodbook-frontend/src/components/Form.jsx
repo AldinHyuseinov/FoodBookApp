@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import { loginUser, registerUser } from "../services/userService";
+import ErrorMessage from "./ErrorMessage";
 
 export default function Form({ title, buttonLabel, children }) {
   const [passwordShown, setShownPassword] = useState(false);
@@ -78,20 +79,6 @@ export default function Form({ title, buttonLabel, children }) {
 
       {children}
     </form>
-  );
-}
-
-function ErrorMessage({ message }) {
-  const messageParts = message.split(".");
-
-  return (
-    <div>
-      {messageParts.map((m, index) => (
-        <p key={index} style={{ color: "darkred", padding: 0 }}>
-          {m}
-        </p>
-      ))}
-    </div>
   );
 }
 

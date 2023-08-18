@@ -46,6 +46,7 @@ export function getUserData() {
     const dateNow = new Date();
 
     if (dateNow >= tokenExpirationDate) {
+      clearUserData();
       return null;
     }
   }

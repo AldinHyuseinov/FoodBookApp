@@ -1,5 +1,6 @@
 input,
-textarea {
+textarea,
+select {
   border-radius: 0.5em;
   border: 1px solid gray;
   padding: 0.5em;
@@ -8,4 +9,13 @@ textarea {
 .form-input {
   display: flex;
   flex-direction: column;
+}
+
+button[type="submit"] {
+  padding: 0.5em;
+  margin-bottom: 1.5em;
+  border-radius: 0.5em;
+  border: 1px solid gray;
+  width: 5.5em;
+  background-color: orange;
 }

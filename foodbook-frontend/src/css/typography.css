@@ -9,6 +9,7 @@ button,
 label,
 textarea,
 input,
+option,
 table {
   font: inherit;
 }
