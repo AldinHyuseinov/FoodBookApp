@@ -1,10 +1,17 @@
-import RemoveIngredientButton from "./RemoveIngredientButton";
+export default function IngredientField({ placeholder, children, onChange, value }) {
+  const handleInputChange = (e) => {
+    onChange(e.target.value);
+  };
 
-export default function IngredientField({ placeholder }) {
   return (
     <div className="ingredient-field">
-      <input type="text" placeholder={placeholder || "Add another ingredient"} />
-      <RemoveIngredientButton />
+      <input
+        type="text"
+        value={value}
+        placeholder={placeholder || "Add another ingredient"}
+        onChange={handleInputChange}
+      />
+      {children}
     </div>
   );
 }

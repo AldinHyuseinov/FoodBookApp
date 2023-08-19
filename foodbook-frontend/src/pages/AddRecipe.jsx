@@ -4,10 +4,82 @@ import previewPhoto from "../utils/previewPhotoUtil";
 import "../css/add-recipe-form.css";
 import "../css/form.css";
 import RecipeTimeField from "../components/RecipeTimeField";
+import { useState } from "react";
+import RemoveButton from "../components/RemoveButton";
 
 export default function AddRecipePage() {
+  const initialIngredientFields = [
+    { placeholder: "e.g. 2 cups flour, sifted" },
+    { placeholder: "e.g. 1 cup sugar" },
+    { placeholder: "e.g. 2 tablespoons butter, softened" },
+  ];
+
+  const initialDirectionFields = [
+    { placeholder: "e.g. Preheat oven to 350 degrees…", stepNumber: 1 },
+    { placeholder: "e.g. Combine all dry ingredients in a large bowl…", stepNumber: 2 },
+    { placeholder: "e.g. Pour into greased trays and bake for 15-20 minutes…", stepNumber: 3 },
+  ];
+
+  const [ingredientFields, setIngredientFields] = useState(initialIngredientFields);
+  const [directionFields, setDirectionFields] = useState(initialDirectionFields);
+
+  const [ingredients, setIngredients] = useState([]);
+  const [directions, setDirections] = useState([]);
+
+  const handleIngredientChange = (index, value) => {
+    const newIngredients = [...ingredients];
+    newIngredients[index] = value;
+    setIngredients(newIngredients);
+  };
+
+  const handleDirectionChange = (index, value) => {
+    const newDirections = [...directions];
+    newDirections[index] = value;
+    setDirections(newDirections);
+  };
+
   const handlePhotoChange = (e) => {
     previewPhoto(e);
+  };
+
+  const addIngredientField = (e) => {
+    e.preventDefault();
+
+    const newIngredientFields = [...ingredientFields, { placeholder: null }];
+    setIngredientFields(newIngredientFields);
+  };
+
+  const removeIngredientField = (index) => {
+    const newIngredientFields = ingredientFields.filter((_, i) => i !== index);
+    const ingredientValues = [...ingredients];
+    ingredientValues[index] = "";
+    setIngredients(ingredientValues);
+    setIngredientFields(newIngredientFields);
+  };
+
+  const addDirectionField = (e) => {
+    e.preventDefault();
+
+    const newDirectionFields = [
+      ...directionFields,
+      { placeholder: null, stepNumber: directionFields.length + 1 },
+    ];
+
+    setDirectionFields(newDirectionFields);
+  };
+
+  const removeDirectionField = (stepNumber) => {
+    const newDirections = directionFields
+      .filter((direction) => direction.stepNumber !== stepNumber)
+      .map((direction, i) => ({
+        ...direction,
+        stepNumber: i + 1,
+      }));
+
+    const directionValues = [...directions];
+    directionValues[stepNumber] = "";
+    setDirections(directionValues);
+    setDirectionFields(newDirections);
   };
 
   return (
@@ -67,17 +139,21 @@ export default function AddRecipePage() {
               special preparation (i.e. sifted, softened, chopped).
             </p>
 
-            <div className="form-input">
-              <IngredientField placeholder="e.g. 2 cups flour, sifted" />
-            </div>
-            <div className="form-input">
-              <IngredientField placeholder="e.g. 1 cup sugar" />
-            </div>
-            <div className="form-input">
-              <IngredientField placeholder="e.g. 2 tablespoons butter, softened" />
-            </div>
+            {ingredientFields.map(({ placeholder }, index) => (
+              <div key={index} className="form-input">
+                <IngredientField
+                  placeholder={placeholder}
+                  value={ingredients[index]}
+                  onChange={(value) => handleIngredientChange(index, value)}
+                >
+                  <RemoveButton removeItem={() => removeIngredientField(index)} />
+                </IngredientField>
+              </div>
+            ))}
 
-            <button className="add-btn">Add Ingredient</button>
+            <button className="add-btn" onClick={addIngredientField}>
+              Add Ingredient
+            </button>
           </fieldset>
 
           <fieldset className="form-section directions">
@@ -89,23 +165,22 @@ export default function AddRecipePage() {
               and pan sizes, etc.
             </p>
 
-            <div className="form-input">
-              <DirectionField placeholder="e.g. Preheat oven to 350 degrees…" stepNumber={1} />
-            </div>
-            <div className="form-input">
-              <DirectionField
-                placeholder="e.g. Combine all dry ingredients in a large bowl…"
-                stepNumber={2}
-              />
-            </div>
-            <div className="form-input">
-              <DirectionField
-                placeholder="e.g. Pour into greased trays and bake for 15-20 minutes…"
-                stepNumber={3}
-              />
-            </div>
+            {directionFields.map(({ placeholder, stepNumber }) => (
+              <div key={stepNumber} className="form-input">
+                <DirectionField
+                  placeholder={placeholder}
+                  stepNumber={stepNumber}
+                  value={directions[stepNumber]}
+                  onChange={(value) => handleDirectionChange(stepNumber, value)}
+                >
+                  <RemoveButton removeItem={() => removeDirectionField(stepNumber)} />
+                </DirectionField>
+              </div>
+            ))}
 
-            <button className="add-btn">Add Step</button>
+            <button className="add-btn" onClick={addDirectionField}>
+              Add Step
+            </button>
           </fieldset>
 
           <fieldset className="form-section servings">
