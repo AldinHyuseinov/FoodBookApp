@@ -47,7 +47,8 @@ label {
   min-height: 90px;
 }
 
-#direction {
+#direction,
+#note {
   max-width: 431.18px;
   min-height: 43px;
 }
@@ -64,30 +65,35 @@ label {
 
 .ingredients .form-input,
 .directions .form-input,
-.servings .form-input {
+.servings .form-input,
+.notes .form-input {
   width: 100%;
 }
 
 .ingredient-field,
 .direction-field,
-.time-field {
+.time-field,
+.note-field {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .ingredient-field input,
-.direction-field textarea {
+.direction-field textarea,
+.note-field textarea {
   width: 90%;
 }
 
 .ingredient-field svg,
-.direction-field svg {
+.direction-field svg,
+.note-field svg {
   height: 2em;
   padding: 0.4em;
 }
 
-.direction-field label {
+.direction-field label,
+.note-field label {
   text-align: center;
   margin-right: 1em;
 }

@@ -7,7 +7,7 @@ export default function IngredientField({ placeholder, children, onChange, value
     <div className="ingredient-field">
       <input
         type="text"
-        value={value}
+        value={value || ""}
         placeholder={placeholder || "Add another ingredient"}
         onChange={handleInputChange}
       />

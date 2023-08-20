@@ -8,7 +8,7 @@ export default function DirectionField({ placeholder, stepNumber, children, onCh
       <label htmlFor="direction">Step {stepNumber}</label>
       <textarea
         id="direction"
-        value={value}
+        value={value || ""}
         placeholder={placeholder || "Add another step"}
         onChange={handleInputChange}
       ></textarea>

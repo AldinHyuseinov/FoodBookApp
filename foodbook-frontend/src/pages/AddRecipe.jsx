@@ -4,8 +4,9 @@ import previewPhoto from "../utils/previewPhotoUtil";
 import "../css/add-recipe-form.css";
 import "../css/form.css";
 import RecipeTimeField from "../components/RecipeTimeField";
-import { useState } from "react";
+import React, { useRef, useState } from "react";
 import RemoveButton from "../components/RemoveButton";
+import { addRecipe } from "../services/recipeService";
 
 export default function AddRecipePage() {
   const initialIngredientFields = [
@@ -23,8 +24,44 @@ export default function AddRecipePage() {
   const [ingredientFields, setIngredientFields] = useState(initialIngredientFields);
   const [directionFields, setDirectionFields] = useState(initialDirectionFields);
 
+  const title = useRef("");
+  const description = useRef("");
+  const [photo, setPhoto] = useState(null);
   const [ingredients, setIngredients] = useState([]);
   const [directions, setDirections] = useState([]);
+  const servings = useRef("");
+  const [prepTime, setPrepTime] = useState({ time: 0, unit: "minutes" });
+  const [cookTime, setCookTime] = useState({ time: 0, unit: "minutes" });
+  const [notesAndTitles, setNotesAndTitles] = useState([]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("title", title.current.value);
+    formData.append("description", description.current.value);
+
+    if (photo) {
+      formData.append("photo", photo);
+    }
+    formData.append("ingredients", JSON.stringify(ingredients.filter((ingredient) => ingredient)));
+    formData.append("directions", JSON.stringify(directions.filter((direction) => direction)));
+    formData.append("servings", servings.current.value);
+    formData.append("prepTime", `${prepTime.time} ${prepTime.unit}`);
+    formData.append("cookTime", `${cookTime.time} ${prepTime.unit}`);
+    formData.append(
+      "notes",
+      JSON.stringify(
+        notesAndTitles.filter(({ title, noteText }) => title !== "" && noteText !== "")
+      )
+    );
+
+    try {
+      await addRecipe(formData);
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
 
   const handleIngredientChange = (index, value) => {
     const newIngredients = [...ingredients];
@@ -38,8 +75,30 @@ export default function AddRecipePage() {
     setDirections(newDirections);
   };
 
+  const handleNoteChange = (e, index, input) => {
+    const newNotesAndTitles = [...notesAndTitles];
+    const noteToChange = newNotesAndTitles[index];
+    noteToChange[input] = e.target.value;
+    setNotesAndTitles(newNotesAndTitles);
+  };
+
+  const handleTimeChange = (value, input, timeFieldId) => {
+    if (timeFieldId === "prep-time") {
+      const newPrepTime = { ...prepTime };
+      newPrepTime[input] = input === "time" ? Number(value) : value;
+      setPrepTime(newPrepTime);
+
+      return;
+    }
+
+    const newCookTime = { ...cookTime };
+    newCookTime[input] = input === "time" ? Number(value) : value;
+    setCookTime(newCookTime);
+  };
+
   const handlePhotoChange = (e) => {
     previewPhoto(e);
+    setPhoto(e.target.files[0]);
   };
 
   const addIngredientField = (e) => {
@@ -52,8 +111,12 @@ export default function AddRecipePage() {
   const removeIngredientField = (index) => {
     const newIngredientFields = ingredientFields.filter((_, i) => i !== index);
     const ingredientValues = [...ingredients];
-    ingredientValues[index] = "";
-    setIngredients(ingredientValues);
+
+    if (ingredientValues.length >= 1) {
+      ingredientValues[index] = "";
+      setIngredients(ingredientValues);
+    }
+
     setIngredientFields(newIngredientFields);
   };
 
@@ -77,9 +140,24 @@ export default function AddRecipePage() {
       }));
 
     const directionValues = [...directions];
-    directionValues[stepNumber] = "";
-    setDirections(directionValues);
+
+    if (directionValues.length >= 1) {
+      directionValues[stepNumber] = "";
+      setDirections(directionValues);
+    }
     setDirectionFields(newDirections);
+  };
+
+  const addNoteField = (e) => {
+    e.preventDefault();
+
+    const newNotesAndTitles = [...notesAndTitles, { title: "", noteText: "" }];
+    setNotesAndTitles(newNotesAndTitles);
+  };
+
+  const removeNoteField = (index) => {
+    const newNotesAndTitles = notesAndTitles.filter((_, i) => i !== index);
+    setNotesAndTitles(newNotesAndTitles);
   };
 
   return (
@@ -92,19 +170,26 @@ export default function AddRecipePage() {
           </p>
         </header>
 
-        <form encType="multipart/form-data">
+        <form encType="multipart/form-data" onSubmit={handleSubmit}>
           <fieldset className="form-section recipe-details">
             <legend style={{ display: "none" }}>Recipe title and description</legend>
 
             <div className="inputs">
               <div className="form-input">
                 <label htmlFor="title">Recipe Title</label>
-                <input type="text" name="title" id="title" placeholder="Give your recipe a title" />
+                <input
+                  ref={title}
+                  type="text"
+                  name="title"
+                  id="title"
+                  placeholder="Give your recipe a title"
+                />
               </div>
 
               <div className="form-input">
                 <label htmlFor="description">Description</label>
                 <textarea
+                  ref={description}
                   rows="5"
                   cols="10"
                   name="description"
@@ -187,17 +272,27 @@ export default function AddRecipePage() {
             <legend style={{ display: "none" }}>Servings</legend>
             <div className="form-input">
               <label htmlFor="servings">Servings</label>
-              <input type="text" id="servings" placeholder="e.g. 8" />
+              <input ref={servings} type="text" id="servings" placeholder="e.g. 8" />
             </div>
           </fieldset>
 
           <fieldset className="form-section recipe-cook-times">
             <legend style={{ display: "none" }}>Times</legend>
             <div className="form-input">
-              <RecipeTimeField id="prep-time" label="Prep Time" />
+              <RecipeTimeField
+                id="prep-time"
+                label="Prep Time"
+                onTimeChange={(value) => handleTimeChange(value, "time", "prep-time")}
+                onUnitChange={(value) => handleTimeChange(value, "unit", "prep-time")}
+              />
             </div>
             <div className="form-input">
-              <RecipeTimeField id="cook-time" label="Cook Time (optional)" />
+              <RecipeTimeField
+                id="cook-time"
+                label="Cook Time (optional)"
+                onTimeChange={(value) => handleTimeChange(value, "time", "cook-time")}
+                onUnitChange={(value) => handleTimeChange(value, "unit", "cook-time")}
+              />
             </div>
           </fieldset>
 
@@ -207,7 +302,38 @@ export default function AddRecipePage() {
             </legend>
             <p>Add any helpful tips about ingredient substitutions, serving, or storage here.</p>
 
-            <button className="add-btn">Add Note</button>
+            {notesAndTitles.map(({ title, noteText }, index) => (
+              <React.Fragment key={index}>
+                <div className="form-input">
+                  <label htmlFor="title">Title</label>
+                  <input
+                    type="text"
+                    value={title || ""}
+                    id="title"
+                    placeholder="e.g. Cook's Tip"
+                    onChange={(e) => handleNoteChange(e, index, "title")}
+                  />
+                </div>
+
+                <div className="form-input">
+                  <div className="note-field">
+                    <label htmlFor="note">Note</label>
+                    <textarea
+                      type="text"
+                      value={noteText || ""}
+                      id="note"
+                      placeholder="e.g. Try not to overmix the batter. Fold gently"
+                      onChange={(e) => handleNoteChange(e, index, "noteText")}
+                    />
+                    <RemoveButton removeItem={() => removeNoteField(index)} />
+                  </div>
+                </div>
+              </React.Fragment>
+            ))}
+
+            <button className="add-btn" onClick={addNoteField}>
+              Add Note
+            </button>
           </fieldset>
 
           <button type="submit">Submit</button>

@@ -35,6 +35,8 @@ dependencies {
     implementation("io.jsonwebtoken:jjwt:0.9.1")
     implementation("org.modelmapper:modelmapper:3.0.0")
     implementation("javax.xml.bind:jaxb-api:2.3.1")
+    implementation("com.google.code.gson:gson:2.10.1")
+
 }
 
 tasks.withType<Test> {

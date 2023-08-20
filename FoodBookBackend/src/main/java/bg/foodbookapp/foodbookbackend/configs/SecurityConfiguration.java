@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -39,7 +40,9 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .authorizeHttpRequests((authorize) -> authorize.requestMatchers(PathRequest.toStaticResources()
-                        .atCommonLocations()).permitAll().anyRequest().permitAll())
+                        .atCommonLocations()).permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/recipes").authenticated()
+                        .anyRequest().permitAll())
                 .cors(withDefaults()).csrf(AbstractHttpConfigurer::disable).sessionManagement((sessionManagement) ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling((exceptionHandlingConfigurer) -> exceptionHandlingConfigurer

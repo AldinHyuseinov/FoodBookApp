@@ -15,4 +15,7 @@ import lombok.Setter;
 public class Direction extends BaseEntity {
     @Column(nullable = false)
     private String explanation;
+
+    @Column(nullable = false)
+    private Integer stepNumber;
 }

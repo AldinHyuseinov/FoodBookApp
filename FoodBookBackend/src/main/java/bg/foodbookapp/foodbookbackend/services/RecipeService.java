@@ -1,8 +1,10 @@
 package bg.foodbookapp.foodbookbackend.services;
 
+import bg.foodbookapp.foodbookbackend.models.dto.AddRecipeDTO;
 import bg.foodbookapp.foodbookbackend.models.dto.RecipeDTO;
 import bg.foodbookapp.foodbookbackend.models.entities.*;
 import bg.foodbookapp.foodbookbackend.repositories.*;
+import com.google.gson.Gson;
 import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -29,6 +31,8 @@ public class RecipeService {
     private final UserRepository userRepository;
 
     private final ModelMapper mapper;
+
+    private final Gson gson;
 
     @PostConstruct
     private void initRecipes() {
@@ -64,9 +68,11 @@ public class RecipeService {
 
         Direction direction = new Direction();
         direction.setExplanation("Add ingredients to a pot.");
+        direction.setStepNumber(1);
 
         Direction direction2 = new Direction();
         direction2.setExplanation("Boil and serve!");
+        direction2.setStepNumber(2);
 
         directionRepository.saveAll(List.of(direction, direction2));
 
@@ -98,5 +104,9 @@ public class RecipeService {
         Recipe recipe = recipeRepository.findById(recipeId).orElse(null);
 
         return recipe.getReviews().stream().mapToDouble(Review::getRating).average().orElse(0);
+    }
+
+    public void addRecipe(AddRecipeDTO addRecipeDTO) {
+        // Todo:
     }
 }
