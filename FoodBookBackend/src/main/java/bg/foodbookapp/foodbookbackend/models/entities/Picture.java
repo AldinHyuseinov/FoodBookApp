@@ -15,6 +15,9 @@ public class Picture extends BaseEntity {
     @Column(columnDefinition = "BLOB", length = Integer.MAX_VALUE)
     private byte[] picture;
 
+    @Column(nullable = false)
+    private String fileType;
+
     @ManyToOne(optional = false)
     private PictureType pictureType;
 }

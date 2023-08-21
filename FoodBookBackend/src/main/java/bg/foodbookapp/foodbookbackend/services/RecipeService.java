@@ -1,8 +1,8 @@
 package bg.foodbookapp.foodbookbackend.services;
 
-import bg.foodbookapp.foodbookbackend.models.dto.AddRecipeDTO;
-import bg.foodbookapp.foodbookbackend.models.dto.RecipeDTO;
+import bg.foodbookapp.foodbookbackend.models.dto.*;
 import bg.foodbookapp.foodbookbackend.models.entities.*;
+import bg.foodbookapp.foodbookbackend.models.enums.Type;
 import bg.foodbookapp.foodbookbackend.repositories.*;
 import com.google.gson.Gson;
 import jakarta.annotation.PostConstruct;
@@ -13,6 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 
 @Service
@@ -29,6 +32,8 @@ public class RecipeService {
     private final ReviewRepository reviewRepository;
 
     private final UserRepository userRepository;
+
+    private final PictureService pictureService;
 
     private final ModelMapper mapper;
 
@@ -91,7 +96,9 @@ public class RecipeService {
             if (recipePictures.size() == 0) {
                 recipeDTO.setPicture(null);
             } else {
-                recipeDTO.setPicture(recipe.getRecipePictures().get(0).getPicture());
+                Picture picture = recipe.getRecipePictures().get(0);
+                String base64 = Base64.getEncoder().encodeToString(picture.getPicture());
+                recipeDTO.setPicture("data:" + picture.getFileType() + ";base64," + base64);
             }
             recipeDTO.setRating(getAverageRatingForRecipe(recipe.getId()));
 
@@ -106,7 +113,57 @@ public class RecipeService {
         return recipe.getReviews().stream().mapToDouble(Review::getRating).average().orElse(0);
     }
 
-    public void addRecipe(AddRecipeDTO addRecipeDTO) {
-        // Todo:
+    public void addRecipe(AddRecipeDTO addRecipeDTO, String userEmail) {
+        Recipe recipe = mapper.map(addRecipeDTO, Recipe.class);
+
+        if (addRecipeDTO.getPhoto() != null) {
+            recipe.setRecipePictures(List.of(pictureService.addPicture(addRecipeDTO.getPhoto(), Type.RECIPE)));
+        }
+        setIngredients(addRecipeDTO, recipe);
+        setDirections(addRecipeDTO, recipe);
+        setNotes(addRecipeDTO, recipe);
+        recipe.setAddedByUser(userRepository.findByEmail(userEmail).orElse(null));
+        recipe.setDateAdded(LocalDateTime.now());
+
+        recipeRepository.save(recipe);
+    }
+
+
+    private void setIngredients(AddRecipeDTO addRecipeDTO, Recipe recipe) {
+        List<Ingredient> ingredients = Arrays.stream(gson.fromJson(addRecipeDTO.getIngredients(), String[].class))
+                .map(ingredientStr -> {
+                    Ingredient ingredient = new Ingredient();
+                    ingredient.setIngredientInfo(ingredientStr);
+                    return ingredient;
+                }).toList();
+
+        ingredientRepository.saveAll(ingredients);
+        recipe.setIngredients(ingredients);
+    }
+
+    private void setDirections(AddRecipeDTO addRecipeDTO, Recipe recipe) {
+        List<String> directionStrings = Arrays.stream(gson.fromJson(addRecipeDTO.getDirections(), String[].class)).toList();
+        List<Direction> directions = new ArrayList<>();
+
+        for (int i = 0; i < directionStrings.size(); i++) {
+            Direction direction = new Direction();
+            direction.setExplanation(directionStrings.get(i));
+            direction.setStepNumber(i + 1);
+
+            directions.add(direction);
+        }
+
+        directionRepository.saveAll(directions);
+        recipe.setDirections(directions);
+    }
+
+    private void setNotes(AddRecipeDTO addRecipeDTO, Recipe recipe) {
+        List<Note> notes = Arrays.stream(gson.fromJson(addRecipeDTO.getNotes(), NoteDTO[].class))
+                .map(noteDTO -> mapper.map(noteDTO, Note.class)).toList();
+
+        if (!notes.isEmpty()) {
+            noteRepository.saveAll(notes);
+            recipe.setNotes(notes);
+        }
     }
 }

@@ -2,6 +2,7 @@ package bg.foodbookapp.foodbookbackend.models.dto;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.core.io.InputStreamResource;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ public class RecipeDTO {
 
     private String title;
 
-    private byte[] picture;
+    private String picture;
 
     private double rating;
 

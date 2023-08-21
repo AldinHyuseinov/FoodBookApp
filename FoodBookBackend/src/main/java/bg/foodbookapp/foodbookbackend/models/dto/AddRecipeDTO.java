@@ -1,5 +1,6 @@
 package bg.foodbookapp.foodbookbackend.models.dto;
 
+import bg.foodbookapp.foodbookbackend.utils.validations.ValidatePicture;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -17,6 +18,7 @@ public class AddRecipeDTO {
     @Size(min = 10, max = 300, message = "Description should be between 10 and 300 characters")
     private String description;
 
+    @ValidatePicture
     private MultipartFile photo;
 
     private String ingredients;

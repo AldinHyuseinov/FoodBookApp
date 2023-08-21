@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 import static bg.foodbookapp.foodbookbackend.utils.ErrorHelper.hasErrors;
@@ -33,9 +34,9 @@ public class RecipeRestController {
     }
 
     @PostMapping(consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
-    public ResponseEntity<?> addRecipe(@ModelAttribute @Valid AddRecipeDTO addRecipeDTO, BindingResult bindingResult) {
+    public ResponseEntity<?> addRecipe(@ModelAttribute @Valid AddRecipeDTO addRecipeDTO, BindingResult bindingResult, Principal principal) {
         hasErrors(bindingResult);
-        recipeService.addRecipe(addRecipeDTO);
+        recipeService.addRecipe(addRecipeDTO, principal.getName());
         LOGGER.info("Added recipe: {}", addRecipeDTO.getTitle());
 
         return ResponseEntity.ok().build();

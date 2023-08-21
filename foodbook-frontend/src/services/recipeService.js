@@ -7,10 +7,17 @@ export async function getAllRecipes() {
 }
 
 export async function addRecipe(recipeData) {
+  const userData = getUserData();
+
+  if (!userData) {
+    location.href = "/auth/login";
+    return;
+  }
+
   const requestOptions = {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${getUserData().authorization}`,
+      Authorization: `Bearer ${userData.authorization}`,
     },
     body: recipeData,
   };
@@ -27,4 +34,6 @@ export async function addRecipe(recipeData) {
 
     throw new Error(messages.join(""));
   }
+
+  // location.href = "/";
 }
