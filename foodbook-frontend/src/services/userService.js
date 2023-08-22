@@ -4,7 +4,11 @@ export async function loginUser(email, password) {
   const response = await fetch(`${API_URL}/login`, getRequestOptions(email, password));
 
   if (response.status === 401) {
-    throw new Error();
+    throw new Error("Invalid username or password.");
+  }
+
+  if (response.status === 500) {
+    throw new Error("Internal server error.");
   }
 
   const authHeader = response.headers.get("Authorization");

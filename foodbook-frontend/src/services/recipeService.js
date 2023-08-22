@@ -25,15 +25,8 @@ export async function addRecipe(recipeData) {
   const response = await fetch(API_URL, requestOptions);
 
   if (response.status === 400) {
-    const err = await response.json();
-    const messages = [];
-
-    Object.keys(err).forEach((key) => {
-      messages.push(`${err[key]}`);
-    });
-
-    throw new Error(messages.join(""));
+    throw new Error(JSON.stringify(await response.json()));
   }
 
-  // location.href = "/";
+  location.href = "/";
 }

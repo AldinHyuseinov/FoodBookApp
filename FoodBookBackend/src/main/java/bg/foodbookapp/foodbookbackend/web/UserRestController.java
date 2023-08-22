@@ -21,8 +21,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 
 import static bg.foodbookapp.foodbookbackend.utils.ErrorHelper.hasErrors;
 
@@ -64,8 +64,8 @@ public class UserRestController {
             UserModel userModel = new UserModel();
             userModel.setEmail(authenticate.getName());
 
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-            String strDate = dateFormat.format(jwtTokenUtil.extractExpiration(token));
+            DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
+            String strDate = dateFormat.format(jwtTokenUtil.extractExpiration(token).toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
             userModel.setTokenExpiration(strDate);
 
             return ResponseEntity.ok()

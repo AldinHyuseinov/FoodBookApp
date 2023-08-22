@@ -4,11 +4,24 @@ h1 {
 
 .cards {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.card {
+  flex: 0 1 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
 }
 
 .media {
-  width: 50%;
+  width: 90%;
+}
+
+.media img {
+  aspect-ratio: 1;
 }
 
 .tag {

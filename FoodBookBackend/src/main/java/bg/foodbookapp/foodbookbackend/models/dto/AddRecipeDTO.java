@@ -2,6 +2,7 @@ package bg.foodbookapp.foodbookbackend.models.dto;
 
 import bg.foodbookapp.foodbookbackend.utils.validations.ValidatePicture;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,13 +22,16 @@ public class AddRecipeDTO {
     @ValidatePicture
     private MultipartFile photo;
 
+    @NotNull(message = "Missing ingredients")
     private String ingredients;
 
+    @NotNull(message = "Missing directions")
     private String directions;
 
     @Min(value = 1, message = "At least one serving is required")
     private Integer servings;
 
+    @NotNull(message = "How long does it take to prep?")
     private String prepTime;
 
     private String cookTime;

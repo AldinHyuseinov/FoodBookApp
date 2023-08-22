@@ -1,24 +1,28 @@
 import { useEffect, useState } from "react";
 import { getAllRecipes } from "../services/recipeService";
 import "../css/home.css";
+import Loading from "../components/Loading";
 
 export default function HomePage() {
   const [allRecipes, setAllRecipes] = useState([]);
+  const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
     const getRecipes = async () => {
+      setLoading(true);
       const recipes = await getAllRecipes();
       setAllRecipes(recipes);
+      setLoading(false);
     };
     getRecipes();
   }, []);
 
-  //Todo:
   return (
     <main>
       <h1>All Recipes</h1>
 
       <div className="cards">
+        {isLoading && <Loading />}
         {allRecipes.map(({ id, title, picture, rating, tags }) => (
           <div key={id} className="card">
             <div className="media">

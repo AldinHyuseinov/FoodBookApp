@@ -1,7 +1,10 @@
 export default function previewPhoto(e) {
   const file = e.target.files[0];
 
-  if (!file) {
+  if (
+    !file ||
+    (file.type !== "image/jpeg" && file.type !== "image/png" && file.type !== "image/webp")
+  ) {
     e.target.style.background = "url(/src/images/recipe-placeholder.png) center";
     return;
   }

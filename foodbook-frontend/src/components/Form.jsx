@@ -30,7 +30,7 @@ export default function Form({ title, buttonLabel, children }) {
         setErrorMessage("");
       } catch (err) {
         setError(true);
-        setErrorMessage("Invalid username or password.");
+        setErrorMessage(err.message);
         e.target.disabled = false;
       }
       clearFields([email.current, password.current]);

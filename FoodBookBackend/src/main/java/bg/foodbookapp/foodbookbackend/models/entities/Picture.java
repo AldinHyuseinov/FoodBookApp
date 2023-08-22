@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 public class Picture extends BaseEntity {
     @Lob
-    @Column(columnDefinition = "BLOB", length = Integer.MAX_VALUE)
+    @Column(columnDefinition = "MEDIUMBLOB", length = Integer.MAX_VALUE)
     private byte[] picture;
 
     @Column(nullable = false)

@@ -7,6 +7,7 @@ import RecipeTimeField from "../components/RecipeTimeField";
 import React, { useRef, useState } from "react";
 import RemoveButton from "../components/RemoveButton";
 import { addRecipe } from "../services/recipeService";
+import ErrorBox from "../components/ErrorBox";
 
 export default function AddRecipePage() {
   const initialIngredientFields = [
@@ -33,6 +34,7 @@ export default function AddRecipePage() {
   const [prepTime, setPrepTime] = useState({ time: 0, unit: "minutes" });
   const [cookTime, setCookTime] = useState({ time: 0, unit: "minutes" });
   const [notesAndTitles, setNotesAndTitles] = useState([]);
+  const [errors, setErrors] = useState({});
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -44,10 +46,25 @@ export default function AddRecipePage() {
     if (photo) {
       formData.append("photo", photo);
     }
-    formData.append("ingredients", JSON.stringify(ingredients.filter((ingredient) => ingredient)));
-    formData.append("directions", JSON.stringify(directions.filter((direction) => direction)));
-    formData.append("servings", servings.current.value);
-    formData.append("prepTime", `${prepTime.time} ${prepTime.unit}`);
+
+    const filteredIngredients = ingredients.filter((ingredient) => ingredient);
+    if (filteredIngredients.length > 0) {
+      formData.append("ingredients", JSON.stringify(filteredIngredients));
+    }
+
+    const filteredDirections = directions.filter((direction) => direction);
+    if (filteredDirections.length > 0) {
+      formData.append("directions", JSON.stringify(filteredDirections));
+    }
+
+    formData.append("servings", Number(servings.current.value));
+
+    const prepTimeString = `${prepTime.time} ${prepTime.unit}`;
+
+    if (prepTimeString !== "0 minutes") {
+      formData.append("prepTime", prepTimeString);
+    }
+
     formData.append("cookTime", `${cookTime.time} ${prepTime.unit}`);
     formData.append(
       "notes",
@@ -59,7 +76,8 @@ export default function AddRecipePage() {
     try {
       await addRecipe(formData);
     } catch (err) {
-      console.log(err.message);
+      setErrors(JSON.parse(err.message));
+      window.scrollTo(0, 0);
     }
   };
 
@@ -163,6 +181,9 @@ export default function AddRecipePage() {
   return (
     <main>
       <div className="page-container">
+        {Object.keys(errors).length > 0 && (
+          <ErrorBox message="Please fill out the form and correct the errors!" />
+        )}
         <header className="recipe-header">
           <h1>Add a Recipe</h1>
           <p>
@@ -184,6 +205,7 @@ export default function AddRecipePage() {
                   id="title"
                   placeholder="Give your recipe a title"
                 />
+                {errors.hasOwnProperty("title") && <ErrorBox message={errors["title"]} />}
               </div>
 
               <div className="form-input">
@@ -196,6 +218,9 @@ export default function AddRecipePage() {
                   id="description"
                   placeholder="Share the story behind your recipe and what makes it special."
                 ></textarea>
+                {errors.hasOwnProperty("description") && (
+                  <ErrorBox message={errors["description"]} />
+                )}
               </div>
             </div>
 
@@ -212,10 +237,12 @@ export default function AddRecipePage() {
                 accept="image/*"
                 onChange={handlePhotoChange}
               />
+              {errors.hasOwnProperty("photo") && <ErrorBox message={errors["photo"]} />}
             </div>
           </fieldset>
 
           <fieldset className="form-section ingredients">
+            {errors.hasOwnProperty("ingredients") && <ErrorBox message={errors["ingredients"]} />}
             <legend>
               <p className="legend-title">Ingredients</p>
             </legend>
@@ -242,6 +269,7 @@ export default function AddRecipePage() {
           </fieldset>
 
           <fieldset className="form-section directions">
+            {errors.hasOwnProperty("directions") && <ErrorBox message={errors["directions"]} />}
             <legend>
               <p className="legend-title">Directions</p>
             </legend>
@@ -272,7 +300,8 @@ export default function AddRecipePage() {
             <legend style={{ display: "none" }}>Servings</legend>
             <div className="form-input">
               <label htmlFor="servings">Servings</label>
-              <input ref={servings} type="text" id="servings" placeholder="e.g. 8" />
+              <input ref={servings} type="number" id="servings" placeholder="e.g. 8" />
+              {errors.hasOwnProperty("servings") && <ErrorBox message={errors["servings"]} />}
             </div>
           </fieldset>
 
@@ -285,6 +314,7 @@ export default function AddRecipePage() {
                 onTimeChange={(value) => handleTimeChange(value, "time", "prep-time")}
                 onUnitChange={(value) => handleTimeChange(value, "unit", "prep-time")}
               />
+              {errors.hasOwnProperty("prepTime") && <ErrorBox message={errors["prepTime"]} />}
             </div>
             <div className="form-input">
               <RecipeTimeField

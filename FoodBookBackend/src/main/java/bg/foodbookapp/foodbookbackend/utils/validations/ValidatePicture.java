@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 @Constraint(validatedBy = PictureValidator.class)
 public @interface ValidatePicture {
-    String message() default "Picture should be PNG, JPEG or WEBP.";
+    String message() default "Picture should be PNG, JPEG or WEBP";
 
     Class<?>[] groups() default {};
 
