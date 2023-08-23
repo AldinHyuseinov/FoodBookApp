@@ -64,7 +64,7 @@ public class UserRestController {
             UserModel userModel = new UserModel();
             userModel.setEmail(authenticate.getName());
 
-            DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
+            DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             String strDate = dateFormat.format(jwtTokenUtil.extractExpiration(token).toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
             userModel.setTokenExpiration(strDate);
 

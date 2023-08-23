@@ -112,6 +112,32 @@ label {
   margin-top: 1em;
 }
 
+.sub-titles {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sub-titles p:nth-child(1) {
+  padding-bottom: 1em;
+}
+
+.sub-titles p:nth-child(2) {
+  font-size: 0.9rem;
+  padding: 0;
+}
+
+.sub-titles p:nth-child(2) a {
+  display: inline;
+  color: #595959;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.sub-titles p:nth-child(2) a:hover {
+  text-decoration: underline orange;
+}
+
 .inputs {
   display: flex;
   flex-direction: column;

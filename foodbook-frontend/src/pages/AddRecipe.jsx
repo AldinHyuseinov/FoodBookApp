@@ -8,6 +8,7 @@ import React, { useRef, useState } from "react";
 import RemoveButton from "../components/RemoveButton";
 import { addRecipe } from "../services/recipeService";
 import ErrorBox from "../components/ErrorBox";
+import Modal from "../components/Modal";
 
 export default function AddRecipePage() {
   const initialIngredientFields = [
@@ -35,6 +36,80 @@ export default function AddRecipePage() {
   const [cookTime, setCookTime] = useState({ time: 0, unit: "minutes" });
   const [notesAndTitles, setNotesAndTitles] = useState([]);
   const [errors, setErrors] = useState({});
+
+  const [modal, setModal] = useState({ isOpen: false, itemType: "" });
+  const [modalItems, setModalItems] = useState({});
+  const [modalIngredientText, setModalIngredientText] = useState("");
+  const [modalDirectionText, setModalDirectionText] = useState("");
+
+  const openModal = (items) => {
+    if (items === "ingredients") {
+      setModal({ isOpen: true, itemType: "ingredients" });
+      setModalItems({
+        title: "Add multiple ingredients",
+        description:
+          "Paste your ingredient list here. Add one ingredient per line. Include the quantity (i.e. cups, tablespoons) and any special preparation (i.e. sifted, softened, chopped).",
+        placeholder: `Example\n${Object.values(initialIngredientFields)
+          .map((value) => value.placeholder)
+          .join("\n")}`,
+      });
+      return;
+    }
+
+    setModal({ isOpen: true, itemType: "directions" });
+    setModalItems({
+      title: "Add multiple steps",
+      description:
+        "Enter your direction steps here. Add one step per line. Press ‘enter’ or ‘return’ to start a new step line. Include oven temperatures, baking or cooking times, and pan sizes, etc.",
+      placeholder:
+        "Example:\nCombine all dry ingredients in a large bowl. Set aside.\nCombine all wet ingredients in a small bowl. Fold gently in with the dry ingredients",
+    });
+  };
+
+  const closeModal = (e) => {
+    if (e) {
+      e.preventDefault();
+    }
+    setModal({ isOpen: false, itemType: "" });
+  };
+
+  const handleModalChange = (value, title) => {
+    if (title === "Add multiple ingredients") {
+      setModalIngredientText(value);
+      return;
+    }
+    setModalDirectionText(value);
+  };
+
+  const handleModalSubmit = (title) => {
+    if (title === "Add multiple ingredients") {
+      const newIngredients = ingredients.filter((ingredient) => ingredient);
+      const ingredientsFromModal = modalIngredientText.split("\n");
+
+      ingredientsFromModal.forEach((item) => newIngredients.push(item));
+      setIngredients(newIngredients);
+      setModalIngredientText("");
+
+      if (ingredientFields.length < newIngredients.length) {
+        addIngredientField(null, newIngredients.length - ingredientFields.length);
+      }
+      closeModal();
+
+      return;
+    }
+
+    const newDirections = directions.filter((direction) => direction);
+    const directionsFromModal = modalDirectionText.split("\n");
+
+    directionsFromModal.forEach((item) => newDirections.push(item));
+    setDirections(newDirections);
+    setModalDirectionText("");
+
+    if (directionFields.length < newDirections.length) {
+      addDirectionField(null, newDirections.length - directionFields.length);
+    }
+    closeModal();
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -119,10 +194,19 @@ export default function AddRecipePage() {
     setPhoto(e.target.files[0]);
   };
 
-  const addIngredientField = (e) => {
-    e.preventDefault();
+  const addIngredientField = (e, count) => {
+    if (e) {
+      e.preventDefault();
+    }
 
     const newIngredientFields = [...ingredientFields, { placeholder: null }];
+
+    if (count) {
+      for (let index = 0; index < count - 1; index++) {
+        newIngredientFields.push({ placeholder: null });
+      }
+    }
+
     setIngredientFields(newIngredientFields);
   };
 
@@ -131,27 +215,38 @@ export default function AddRecipePage() {
     const ingredientValues = [...ingredients];
 
     if (ingredientValues.length >= 1) {
-      ingredientValues[index] = "";
+      ingredientValues.splice(index, 1);
       setIngredients(ingredientValues);
     }
 
     setIngredientFields(newIngredientFields);
   };
 
-  const addDirectionField = (e) => {
-    e.preventDefault();
+  const addDirectionField = (e, count) => {
+    if (e) {
+      e.preventDefault();
+    }
 
     const newDirectionFields = [
       ...directionFields,
       { placeholder: null, stepNumber: directionFields.length + 1 },
     ];
 
+    if (count) {
+      for (let index = 0; index < count - 1; index++) {
+        newDirectionFields.push({
+          placeholder: null,
+          stepNumber: directionFields.length + index + 2,
+        });
+      }
+    }
+
     setDirectionFields(newDirectionFields);
   };
 
-  const removeDirectionField = (stepNumber) => {
+  const removeDirectionField = (index) => {
     const newDirections = directionFields
-      .filter((direction) => direction.stepNumber !== stepNumber)
+      .filter((_, i) => i !== index)
       .map((direction, i) => ({
         ...direction,
         stepNumber: i + 1,
@@ -160,7 +255,7 @@ export default function AddRecipePage() {
     const directionValues = [...directions];
 
     if (directionValues.length >= 1) {
-      directionValues[stepNumber] = "";
+      directionValues.splice(index, 1);
       setDirections(directionValues);
     }
     setDirectionFields(newDirections);
@@ -193,7 +288,7 @@ export default function AddRecipePage() {
 
         <form encType="multipart/form-data" onSubmit={handleSubmit}>
           <fieldset className="form-section recipe-details">
-            <legend style={{ display: "none" }}>Recipe title and description</legend>
+            <legend className="visually-hidden">Recipe title and description</legend>
 
             <div className="inputs">
               <div className="form-input">
@@ -246,10 +341,19 @@ export default function AddRecipePage() {
             <legend>
               <p className="legend-title">Ingredients</p>
             </legend>
-            <p>
-              Enter one ingredient per line. Include the quantity (i.e. cups, tablespoons) and any
-              special preparation (i.e. sifted, softened, chopped).
-            </p>
+
+            <div className="sub-titles">
+              <p>
+                Enter one ingredient per line. Include the quantity (i.e. cups, tablespoons) and any
+                special preparation (i.e. sifted, softened, chopped).
+              </p>
+              <p>
+                Enter ingredients below or{" "}
+                <a role="button" onClick={() => openModal("ingredients")}>
+                  Add several at once
+                </a>
+              </p>
+            </div>
 
             {ingredientFields.map(({ placeholder }, index) => (
               <div key={index} className="form-input">
@@ -273,20 +377,29 @@ export default function AddRecipePage() {
             <legend>
               <p className="legend-title">Directions</p>
             </legend>
-            <p>
-              Explain how to make your recipe, including oven temperatures, baking or cooking times,
-              and pan sizes, etc.
-            </p>
 
-            {directionFields.map(({ placeholder, stepNumber }) => (
-              <div key={stepNumber} className="form-input">
+            <div className="sub-titles">
+              <p>
+                Explain how to make your recipe, including oven temperatures, baking or cooking
+                times, and pan sizes, etc.
+              </p>
+              <p>
+                Enter directions below or{" "}
+                <a role="button" onClick={() => openModal("directions")}>
+                  Add several at once
+                </a>
+              </p>
+            </div>
+
+            {directionFields.map(({ placeholder, stepNumber }, index) => (
+              <div key={index} className="form-input">
                 <DirectionField
                   placeholder={placeholder}
                   stepNumber={stepNumber}
-                  value={directions[stepNumber]}
-                  onChange={(value) => handleDirectionChange(stepNumber, value)}
+                  value={directions[index]}
+                  onChange={(value) => handleDirectionChange(index, value)}
                 >
-                  <RemoveButton removeItem={() => removeDirectionField(stepNumber)} />
+                  <RemoveButton removeItem={() => removeDirectionField(index)} />
                 </DirectionField>
               </div>
             ))}
@@ -297,7 +410,7 @@ export default function AddRecipePage() {
           </fieldset>
 
           <fieldset className="form-section servings">
-            <legend style={{ display: "none" }}>Servings</legend>
+            <legend className="visually-hidden">Servings</legend>
             <div className="form-input">
               <label htmlFor="servings">Servings</label>
               <input ref={servings} type="number" id="servings" placeholder="e.g. 8" />
@@ -369,6 +482,19 @@ export default function AddRecipePage() {
           <button type="submit">Submit</button>
         </form>
       </div>
+
+      {modal.isOpen && (
+        <Modal
+          title={modalItems["title"]}
+          description={modalItems["description"]}
+          placeholder={modalItems["placeholder"]}
+          isOpen={modal.isOpen}
+          onClose={closeModal}
+          onChange={(value, title) => handleModalChange(value, title)}
+          onSubmit={(title) => handleModalSubmit(title)}
+          value={modal.itemType === "ingredients" ? modalIngredientText : modalDirectionText}
+        />
+      )}
     </main>
   );
 }
