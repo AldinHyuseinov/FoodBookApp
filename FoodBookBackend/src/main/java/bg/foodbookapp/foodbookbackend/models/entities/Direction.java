@@ -13,7 +13,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Direction extends BaseEntity {
-    @Column(nullable = false)
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String explanation;
 
     @Column(nullable = false)

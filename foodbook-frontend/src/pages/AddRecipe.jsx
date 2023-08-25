@@ -49,8 +49,8 @@ export default function AddRecipePage() {
         title: "Add multiple ingredients",
         description:
           "Paste your ingredient list here. Add one ingredient per line. Include the quantity (i.e. cups, tablespoons) and any special preparation (i.e. sifted, softened, chopped).",
-        placeholder: `Example\n${Object.values(initialIngredientFields)
-          .map((value) => value.placeholder)
+        placeholder: `Example\n${initialIngredientFields
+          .map((field) => field.placeholder)
           .join("\n")}`,
       });
       return;
