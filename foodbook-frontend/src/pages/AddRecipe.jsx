@@ -9,8 +9,11 @@ import RemoveButton from "../components/RemoveButton";
 import { addRecipe } from "../services/recipeService";
 import ErrorBox from "../components/ErrorBox";
 import Modal from "../components/Modal";
+import useTitle from "../hooks/useTitle";
 
 export default function AddRecipePage() {
+  useTitle("Submit a Recipe | FoodBook");
+
   const initialIngredientFields = [
     { placeholder: "e.g. 2 cups flour, sifted" },
     { placeholder: "e.g. 1 cup sugar" },

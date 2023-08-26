@@ -2,19 +2,20 @@ import { useEffect, useState } from "react";
 import { getAllRecipes } from "../services/recipeService";
 import "../css/home.css";
 import Loading from "../components/Loading";
+import useTitle from "../hooks/useTitle";
+import useLoading from "../hooks/useLoading";
 
 export default function HomePage() {
   const [allRecipes, setAllRecipes] = useState([]);
-  const [isLoading, setLoading] = useState(false);
+  const [recipes, isLoading] = useLoading(getAllRecipes);
+  useTitle("FoodBook | All Recipes");
 
   useEffect(() => {
-    const getRecipes = async () => {
-      setLoading(true);
-      const recipes = await getAllRecipes();
-      setAllRecipes(recipes);
-      setLoading(false);
+    const fetchRecipes = async () => {
+      const fetchedRecipes = await recipes();
+      setAllRecipes(fetchedRecipes);
     };
-    getRecipes();
+    fetchRecipes();
   }, []);
 
   return (
@@ -24,7 +25,7 @@ export default function HomePage() {
       <div className="cards">
         {isLoading && <Loading />}
         {allRecipes.map(({ id, title, picture, rating, tags }) => (
-          <div key={id} className="card">
+          <div key={id} className="card" onClick={() => (location.href = `/recipe/${id}`)}>
             <div className="media">
               <img src={picture ? picture : "./src/images/recipe-placeholder.png"} alt="Recipe" />
             </div>

@@ -2,25 +2,14 @@ package bg.foodbookapp.foodbookbackend.models.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.core.io.InputStreamResource;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
-public class RecipeDTO {
-    private Long id;
-
-    private String title;
-
+public class RecipeDTO extends BaseRecipeDTO {
     private String picture;
-
-    private double rating;
-
-    private LocalDateTime dateAdded;
-
     private List<TagDTO> tags;
 
     public RecipeDTO() {

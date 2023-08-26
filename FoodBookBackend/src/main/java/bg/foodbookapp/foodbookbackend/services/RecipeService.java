@@ -4,6 +4,7 @@ import bg.foodbookapp.foodbookbackend.models.dto.*;
 import bg.foodbookapp.foodbookbackend.models.entities.*;
 import bg.foodbookapp.foodbookbackend.models.enums.Type;
 import bg.foodbookapp.foodbookbackend.repositories.*;
+import bg.foodbookapp.foodbookbackend.utils.exceptions.RecipeNotFoundException;
 import com.google.gson.Gson;
 import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
@@ -96,7 +97,7 @@ public class RecipeService {
             if (recipePictures.size() == 0) {
                 recipeDTO.setPicture(null);
             } else {
-                Picture picture = recipe.getRecipePictures().get(0);
+                Picture picture = recipePictures.get(0);
                 String base64 = Base64.getEncoder().encodeToString(picture.getPicture());
                 recipeDTO.setPicture("data:" + picture.getFileType() + ";base64," + base64);
             }
@@ -104,13 +105,6 @@ public class RecipeService {
 
             return recipeDTO;
         }).toList();
-    }
-
-    @Transactional
-    public double getAverageRatingForRecipe(Long recipeId) {
-        Recipe recipe = recipeRepository.findById(recipeId).orElse(null);
-
-        return recipe.getReviews().stream().mapToDouble(Review::getRating).average().orElse(0);
     }
 
     public void addRecipe(AddRecipeDTO addRecipeDTO, String userEmail) {
@@ -128,6 +122,39 @@ public class RecipeService {
         recipeRepository.save(recipe);
     }
 
+    @Transactional
+    public RecipeDetailsDTO getRecipeById(Long recipeId) {
+        Recipe recipe = recipeRepository.findById(recipeId)
+                .orElseThrow(() -> new RecipeNotFoundException("Recipe not found"));
+
+        RecipeDetailsDTO recipeDTO = mapper.map(recipe, RecipeDetailsDTO.class);
+
+        List<Picture> recipePictures = recipe.getRecipePictures();
+
+        if (recipePictures.size() > 0) {
+            recipePictures.forEach(picture -> {
+                String base64 = Base64.getEncoder().encodeToString(picture.getPicture());
+                recipeDTO.getPhotos().add("data:" + picture.getFileType() + ";base64," + base64);
+            });
+        }
+
+        User addedByUser = recipe.getAddedByUser();
+
+        if (addedByUser.getUsername() != null) {
+            recipeDTO.setAddedBy(addedByUser.getUsername());
+        } else {
+            recipeDTO.setAddedBy("Anonymous");
+        }
+
+        return recipeDTO;
+    }
+
+    @Transactional
+    public double getAverageRatingForRecipe(Long recipeId) {
+        Recipe recipe = recipeRepository.findById(recipeId).orElse(null);
+
+        return recipe.getReviews().stream().mapToDouble(Review::getRating).average().orElse(0);
+    }
 
     private void setIngredients(AddRecipeDTO addRecipeDTO, Recipe recipe) {
         List<Ingredient> ingredients = Arrays.stream(gson.fromJson(addRecipeDTO.getIngredients(), String[].class))

@@ -9,6 +9,7 @@ const HomePage = lazy(() => import("./pages/Home"));
 const LoginPage = lazy(() => import("./pages/Login"));
 const RegisterPage = lazy(() => import("./pages/Register"));
 const AddRecipePage = lazy(() => import("./pages/AddRecipe"));
+const RecipePage = lazy(() => import("./pages/Recipe"));
 const ErrorPage = lazy(() => import("./pages/Error"));
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
               path="/recipes/add"
               element={isLoggedIn ? <AddRecipePage /> : <Navigate to="/auth/login" />}
             />
+            <Route path="/recipe/:id" element={<RecipePage />} />
             <Route path="*" element={<ErrorPage />} />
           </Routes>
         </Suspense>

@@ -2,6 +2,7 @@ package bg.foodbookapp.foodbookbackend.web;
 
 import bg.foodbookapp.foodbookbackend.models.dto.AddRecipeDTO;
 import bg.foodbookapp.foodbookbackend.models.dto.RecipeDTO;
+import bg.foodbookapp.foodbookbackend.models.dto.RecipeDetailsDTO;
 import bg.foodbookapp.foodbookbackend.services.RecipeService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
@@ -33,12 +34,17 @@ public class RecipeRestController {
         return ResponseEntity.ok(recipeService.getAllRecipes());
     }
 
-    @PostMapping(consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<?> addRecipe(@ModelAttribute @Valid AddRecipeDTO addRecipeDTO, BindingResult bindingResult, Principal principal) {
         hasErrors(bindingResult);
         recipeService.addRecipe(addRecipeDTO, principal.getName());
         LOGGER.info("Added recipe: {}", addRecipeDTO.getTitle());
 
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{recipe-id}")
+    public ResponseEntity<RecipeDetailsDTO> getRecipe(@PathVariable("recipe-id") Long recipeId) {
+        return ResponseEntity.ok(recipeService.getRecipeById(recipeId));
     }
 }

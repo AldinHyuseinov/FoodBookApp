@@ -30,3 +30,13 @@ export async function addRecipe(recipeData) {
 
   location.href = "/";
 }
+
+export async function getRecipe(id) {
+  const response = await fetch(`${API_URL}/${id}`);
+
+  if (response.status === 404) {
+    location.href = "/404";
+    return;
+  }
+  return response.json();
+}
