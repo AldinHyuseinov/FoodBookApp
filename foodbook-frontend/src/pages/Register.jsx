@@ -1,8 +1,8 @@
 import Image from "../components/AuthImage";
 import Form from "../components/Form";
-import "../css/auth-page.css";
-import "../css/auth-form.css";
-import "../css/form.css";
+import "../assets/css/auth-page.css";
+import "../assets/css/auth-form.css";
+import "../assets/css/form.css";
 import useTitle from "../hooks/useTitle";
 
 export default function RegisterPage() {

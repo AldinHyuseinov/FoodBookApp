@@ -1,8 +1,8 @@
 import DirectionField from "../components/DirectionField";
 import IngredientField from "../components/IngredientField";
 import previewPhoto from "../utils/previewPhotoUtil";
-import "../css/add-recipe-form.css";
-import "../css/form.css";
+import "../assets/css/add-recipe-form.css";
+import "../assets/css/form.css";
 import RecipeTimeField from "../components/RecipeTimeField";
 import React, { useRef, useState } from "react";
 import RemoveButton from "../components/RemoveButton";
@@ -327,7 +327,7 @@ export default function AddRecipePage() {
               <input
                 style={{
                   minHeight: "14.5em",
-                  background: "url(/src/images/recipe-placeholder.png) center",
+                  background: "url(/src/assets/images/recipe-placeholder.png) center",
                 }}
                 type="file"
                 name="photo"
@@ -465,7 +465,6 @@ export default function AddRecipePage() {
                   <div className="note-field">
                     <label htmlFor="note">Note</label>
                     <textarea
-                      type="text"
                       value={noteText || ""}
                       id="note"
                       placeholder="e.g. Try not to overmix the batter. Fold gently"

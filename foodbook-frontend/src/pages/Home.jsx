@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getAllRecipes } from "../services/recipeService";
-import "../css/home.css";
+import "../assets/css/home.css";
 import Loading from "../components/Loading";
 import useTitle from "../hooks/useTitle";
 import useLoading from "../hooks/useLoading";
@@ -27,7 +27,7 @@ export default function HomePage() {
         {allRecipes.map(({ id, title, picture, rating, tags }) => (
           <div key={id} className="card" onClick={() => (location.href = `/recipe/${id}`)}>
             <div className="media">
-              <img src={picture ? picture : "./src/images/recipe-placeholder.png"} alt="Recipe" />
+              <img src={picture ? picture : "./assets/src/images/recipe-placeholder.png"} alt="Recipe" />
             </div>
             <p className="tag">{tags.length > 0 ? tags[0] : "Recipes"}</p>
             <h2>{title}</h2>
