@@ -27,7 +27,10 @@ export default function HomePage() {
         {allRecipes.map(({ id, title, picture, rating, tags }) => (
           <div key={id} className="card" onClick={() => (location.href = `/recipe/${id}`)}>
             <div className="media">
-              <img src={picture ? picture : "./assets/src/images/recipe-placeholder.png"} alt="Recipe" />
+              <img
+                src={picture ? picture : "./src/assets/images/recipe-placeholder.png"}
+                alt={picture ? `Picture of ${title}` : "Recipe"}
+              />
             </div>
             <p className="tag">{tags.length > 0 ? tags[0] : "Recipes"}</p>
             <h2>{title}</h2>

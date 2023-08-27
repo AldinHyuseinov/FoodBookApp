@@ -12,7 +12,7 @@ export default function LoginPage() {
     <main>
       <Form title="Log in" buttonLabel="Log in">
         <p>
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <a href="/auth/register" className="join-link">
             Join now
           </a>

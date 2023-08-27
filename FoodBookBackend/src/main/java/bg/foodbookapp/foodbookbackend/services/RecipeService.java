@@ -52,8 +52,8 @@ public class RecipeService {
         recipe.setDescription("Baked beans are the perfect addition to any outdoor cookout or barbecue. " +
                 "These baked beans are slow-cooked in the oven with onions, and a sweet, syrupy sauce, resulting " +
                 "in an old-fashioned taste that everyone will enjoy.");
-        recipe.setPrepTime("10 min");
-        recipe.setCookTime("4 hrs 10 min");
+        recipe.setPrepTime("10 minutes");
+        recipe.setCookTime("4 hours");
         recipe.setServings(6);
         recipe.setDateAdded(LocalDateTime.now());
 

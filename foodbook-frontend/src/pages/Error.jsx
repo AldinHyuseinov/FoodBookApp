@@ -4,7 +4,7 @@ export default function ErrorPage() {
   return (
     <main>
       <h2>Oops!</h2>
-      <p>The page you're looking for is unavailable.</p>
+      <p>The page you&apos;re looking for is unavailable.</p>
     </main>
   );
 }
