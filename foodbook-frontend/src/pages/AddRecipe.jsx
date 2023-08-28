@@ -10,6 +10,7 @@ import { addRecipe } from "../services/recipeService";
 import ErrorBox from "../components/ErrorBox";
 import Modal from "../components/Modal";
 import useTitle from "../hooks/useTitle";
+import calculateTotalTime from "../utils/calculateTotalTime";
 
 export default function AddRecipePage() {
   useTitle("Submit a Recipe | FoodBook");
@@ -37,6 +38,7 @@ export default function AddRecipePage() {
   const servings = useRef("");
   const [prepTime, setPrepTime] = useState({ time: 0, unit: "minutes" });
   const [cookTime, setCookTime] = useState({ time: 0, unit: "minutes" });
+  const [totalTime, setTotalTime] = useState("");
   const [notesAndTitles, setNotesAndTitles] = useState([]);
   const [errors, setErrors] = useState({});
 
@@ -182,6 +184,12 @@ export default function AddRecipePage() {
     if (timeFieldId === "prep-time") {
       const newPrepTime = { ...prepTime };
       newPrepTime[input] = input === "time" ? Number(value) : value;
+      setTotalTime(
+        calculateTotalTime(
+          `${newPrepTime.time} ${newPrepTime.unit}`,
+          `${cookTime.time} ${cookTime.unit}`
+        )
+      );
       setPrepTime(newPrepTime);
 
       return;
@@ -189,6 +197,12 @@ export default function AddRecipePage() {
 
     const newCookTime = { ...cookTime };
     newCookTime[input] = input === "time" ? Number(value) : value;
+    setTotalTime(
+      calculateTotalTime(
+        `${prepTime.time} ${prepTime.unit}`,
+        `${newCookTime.time} ${newCookTime.unit}`
+      )
+    );
     setCookTime(newCookTime);
   };
 
@@ -352,7 +366,7 @@ export default function AddRecipePage() {
               </p>
               <p>
                 Enter ingredients below or{" "}
-                <a role="button" onClick={() => openModal("ingredients")}>
+                <a role="button" tabIndex="0" onClick={() => openModal("ingredients")}>
                   Add several at once
                 </a>
               </p>
@@ -363,6 +377,7 @@ export default function AddRecipePage() {
                 <IngredientField
                   placeholder={placeholder}
                   value={ingredients[index]}
+                  index={index}
                   onChange={(value) => handleIngredientChange(index, value)}
                 >
                   <RemoveButton removeItem={() => removeIngredientField(index)} />
@@ -388,7 +403,7 @@ export default function AddRecipePage() {
               </p>
               <p>
                 Enter directions below or{" "}
-                <a role="button" onClick={() => openModal("directions")}>
+                <a role="button" tabIndex="0" onClick={() => openModal("directions")}>
                   Add several at once
                 </a>
               </p>
@@ -422,7 +437,7 @@ export default function AddRecipePage() {
           </fieldset>
 
           <fieldset className="form-section recipe-cook-times">
-            <legend style={{ display: "none" }}>Times</legend>
+            <legend className="visually-hidden">Recipe Times</legend>
             <div className="form-input">
               <RecipeTimeField
                 id="prep-time"
@@ -440,6 +455,12 @@ export default function AddRecipePage() {
                 onUnitChange={(value) => handleTimeChange(value, "unit", "cook-time")}
               />
             </div>
+            <div className="form-input">
+              <div className="total-time-field">
+                <label htmlFor="total-time">Total Time</label>
+                <input id="total-time" type="text" value={totalTime || 0} disabled />
+              </div>
+            </div>
           </fieldset>
 
           <fieldset className="form-section notes">
@@ -451,11 +472,11 @@ export default function AddRecipePage() {
             {notesAndTitles.map(({ title, noteText }, index) => (
               <React.Fragment key={index}>
                 <div className="form-input">
-                  <label htmlFor="title">Title</label>
+                  <label htmlFor={`note-title-${index}`}>Title</label>
                   <input
                     type="text"
                     value={title || ""}
-                    id="title"
+                    id={`note-title-${index}`}
                     placeholder="e.g. Cook's Tip"
                     onChange={(e) => handleNoteChange(e, index, "title")}
                   />
@@ -463,10 +484,11 @@ export default function AddRecipePage() {
 
                 <div className="form-input">
                   <div className="note-field">
-                    <label htmlFor="note">Note</label>
+                    <label htmlFor={`note-text-${index}`}>Note</label>
                     <textarea
+                      className="note"
                       value={noteText || ""}
-                      id="note"
+                      id={`note-text-${index}`}
                       placeholder="e.g. Try not to overmix the batter. Fold gently"
                       onChange={(e) => handleNoteChange(e, index, "noteText")}
                     />

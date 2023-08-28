@@ -1,5 +1,4 @@
 export default function calculateTotalTime(time1, time2) {
-   
   const parsedTime1 = parseTime(time1);
   const parsedTime2 = parseTime(time2);
 
@@ -12,15 +11,15 @@ export default function calculateTotalTime(time1, time2) {
   const parts = [];
 
   if (days > 0) {
-    parts.push(`${days} days`);
+    parts.push(`${days} ${days === 1 ? "day" : "days"}`);
   }
 
   if (hours > 0) {
-    parts.push(`${hours} hours`);
+    parts.push(`${hours} ${hours === 1 ? "hour" : "hours"}`);
   }
 
   if (minutes > 0) {
-    parts.push(`${minutes} minutes`);
+    parts.push(`${minutes} ${minutes === 1 ? "minute" : "minutes"}`);
   }
 
   return parts.join(" ");

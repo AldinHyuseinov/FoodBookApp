@@ -19,6 +19,7 @@ button[type="submit"] {
   width: 5.5em;
   background-color: orange;
   cursor: pointer;
+  transition: background-color 250ms ease-in;
 }
 
 button[type="submit"]:hover {

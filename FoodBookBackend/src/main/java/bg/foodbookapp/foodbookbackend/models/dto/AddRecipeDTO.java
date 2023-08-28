@@ -13,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Getter
 @Setter
 public class AddRecipeDTO {
-    @Size(min = 3, max = 50, message = "Title should be between 3 and 50 characters")
+    @Size(min = 3, max = 30, message = "Title should be between 3 and 30 characters")
     private String title;
 
     @Size(min = 10, max = 300, message = "Description should be between 10 and 300 characters")

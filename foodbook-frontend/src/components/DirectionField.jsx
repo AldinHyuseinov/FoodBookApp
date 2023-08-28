@@ -5,9 +5,10 @@ export default function DirectionField({ placeholder, stepNumber, children, onCh
 
   return (
     <div className="direction-field">
-      <label htmlFor="direction">Step {stepNumber}</label>
+      <label htmlFor={`direction-${stepNumber}`}>Step {stepNumber}</label>
       <textarea
-        id="direction"
+        className="direction"
+        id={`direction-${stepNumber}`}
         value={value || ""}
         placeholder={placeholder || "Add another step"}
         onChange={handleInputChange}

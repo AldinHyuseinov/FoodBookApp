@@ -5,7 +5,7 @@
   max-width: 935px;
   margin: 0 auto;
   padding: 0.5em;
-  box-shadow: 0 0 1em rgba(0, 0, 0, 0.25);
+  box-shadow: var(--basic-shadow);
 }
 
 p {
@@ -47,8 +47,8 @@ label {
   min-height: 90px;
 }
 
-#direction,
-#note {
+.direction,
+.note {
   max-width: 431.18px;
   min-height: 43px;
 }
@@ -73,7 +73,8 @@ label {
 .ingredient-field,
 .direction-field,
 .time-field,
-.note-field {
+.note-field,
+.total-time-field {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -98,11 +99,20 @@ label {
   margin-right: 1em;
 }
 
-.time-field {
+.total-time-field input {
+  width: 18.645em;
+  background-color: #fff;
+  color: #000;
+  border: none;
+}
+
+.time-field,
+.total-time-field {
   gap: 1em;
 }
 
-.time-field label {
+.time-field label,
+.total-time-field label {
   width: 20ch;
 }
 
@@ -154,6 +164,7 @@ label {
   border: 2px solid orange;
   background-color: #fff;
   cursor: pointer;
+  transition: background-color 250ms ease-in;
 }
 
 .add-btn::before {
@@ -180,14 +191,20 @@ button[type="submit"] {
     width: 22em;
   }
 
-  .time-field label {
+  .time-field label,
+  .total-time-field label {
     width: 10ch;
     padding-left: 0.5em;
     text-align: center;
   }
 
-  .time-field input {
+  .time-field input,
+  .total-time-field input {
     width: 8em;
     margin-left: 1em;
+  }
+
+  .total-time-field input {
+    width: 18em;
   }
 }
