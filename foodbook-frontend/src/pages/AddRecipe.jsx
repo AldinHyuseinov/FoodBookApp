@@ -4,7 +4,7 @@ import previewPhoto from "../utils/previewPhotoUtil";
 import "../assets/css/add-recipe-form.css";
 import "../assets/css/form.css";
 import RecipeTimeField from "../components/RecipeTimeField";
-import React, { useRef, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import RemoveButton from "../components/RemoveButton";
 import { addRecipe } from "../services/recipeService";
 import ErrorBox from "../components/ErrorBox";
@@ -38,7 +38,11 @@ export default function AddRecipePage() {
   const servings = useRef("");
   const [prepTime, setPrepTime] = useState({ time: 0, unit: "minutes" });
   const [cookTime, setCookTime] = useState({ time: 0, unit: "minutes" });
-  const [totalTime, setTotalTime] = useState("");
+  const totalTime = useMemo(
+    () =>
+      calculateTotalTime(`${prepTime.time} ${prepTime.unit}`, `${cookTime.time} ${cookTime.unit}`),
+    [prepTime, cookTime]
+  );
   const [notesAndTitles, setNotesAndTitles] = useState([]);
   const [errors, setErrors] = useState({});
 
@@ -184,12 +188,6 @@ export default function AddRecipePage() {
     if (timeFieldId === "prep-time") {
       const newPrepTime = { ...prepTime };
       newPrepTime[input] = input === "time" ? Number(value) : value;
-      setTotalTime(
-        calculateTotalTime(
-          `${newPrepTime.time} ${newPrepTime.unit}`,
-          `${cookTime.time} ${cookTime.unit}`
-        )
-      );
       setPrepTime(newPrepTime);
 
       return;
@@ -197,12 +195,6 @@ export default function AddRecipePage() {
 
     const newCookTime = { ...cookTime };
     newCookTime[input] = input === "time" ? Number(value) : value;
-    setTotalTime(
-      calculateTotalTime(
-        `${prepTime.time} ${prepTime.unit}`,
-        `${newCookTime.time} ${newCookTime.unit}`
-      )
-    );
     setCookTime(newCookTime);
   };
 
