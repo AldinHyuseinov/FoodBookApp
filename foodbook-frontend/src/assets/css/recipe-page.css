@@ -1,0 +1,142 @@
+:root {
+  --gray-clr: rgba(0, 0, 0, 0.15);
+  --width: 37.5em;
+  --fs-18: 1.125rem;
+  --width-text: 70ch;
+  --fw-bold: bold;
+  --margin-content: 3em;
+}
+
+article {
+  max-width: calc(var(--width) + 6em);
+  margin: 0 auto;
+  padding-inline: 3em;
+}
+
+.page-header {
+  max-width: var(--width);
+}
+
+.description,
+.detail-label,
+.step-number,
+.direction,
+.note-text {
+  font-size: var(--fs-18);
+}
+
+.header-items {
+  display: flex;
+  gap: 0.5em;
+}
+
+.header-items p {
+  font-size: 0.875rem;
+}
+
+.added-by-user::after {
+  content: "";
+  margin-left: 0.5em;
+  border-right: 2px solid var(--gray-clr);
+}
+
+.added-by-user span {
+  font-weight: var(--fw-bold);
+}
+
+.date {
+  color: rgba(0, 0, 0, 0.65);
+}
+
+.media {
+  max-width: var(--width);
+}
+
+.media img {
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.pictures-section::after {
+  content: "";
+  display: block;
+  margin-top: var(--margin-content);
+  max-width: var(--width);
+  border-bottom: 2px solid var(--gray-clr);
+}
+
+.recipe-details-section {
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  grid-auto-columns: 1fr;
+  grid-template-areas:
+    "prep-time cook-time"
+    "total-time servings";
+  row-gap: 2em;
+  column-gap: 1.5em;
+  max-width: var(--width);
+  margin-block: var(--margin-content);
+  padding: 1.5em;
+  background-color: #f5f6ea;
+  border-radius: 0.5em;
+}
+
+.recipe-detail {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.detail-label,
+.detail-value,
+.step-number {
+  padding: 0;
+}
+
+.detail-label,
+.step-number {
+  font-weight: var(--fw-bold);
+}
+
+.recipe-detail:first-child {
+  grid-area: prep-time;
+}
+
+.recipe-detail:nth-child(2) {
+  grid-area: cook-time;
+}
+
+.recipe-detail:nth-child(3) {
+  grid-area: total-time;
+}
+
+.recipe-detail:last-child {
+  grid-area: servings;
+}
+
+.ingredients-section,
+.directions-section,
+.notes-section,
+.pictures-section {
+  max-width: var(--width);
+}
+
+.ingredients-section li {
+  margin-bottom: 1em;
+  font-size: var(--fs-18);
+}
+
+.ingredients-section li::before {
+  content: "";
+  display: inline-block;
+  margin-right: 1em;
+  border-radius: 50%;
+  width: 0.3125em;
+  height: 0.3125em;
+  background-color: #e7ab46;
+}
+
+.directions-section {
+  margin-block: var(--margin-content);
+}

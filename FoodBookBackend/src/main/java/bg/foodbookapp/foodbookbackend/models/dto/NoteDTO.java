@@ -9,6 +9,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class NoteDTO {
+    private Long id;
+
     @Expose
     private String title;
 

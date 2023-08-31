@@ -7,6 +7,7 @@ import useTitle from "../hooks/useTitle";
 import formatDate from "../utils/formatDate";
 import calculateTotalTime from "../utils/calculateTotalTime";
 import RecipeDetail from "../components/RecipeDetail";
+import "../assets/css/recipe-page.css";
 
 export default function RecipePage() {
   const { id } = useParams();
@@ -31,11 +32,13 @@ export default function RecipePage() {
           <header className="page-header">
             <h1>{recipe.title}</h1>
             {recipe.rating > 0 ? <p>{recipe.rating}</p> : <p>No ratings yet</p>}
-            <p>{recipe.description}</p>
+            <p className="description">{recipe.description}</p>
 
             <div className="header-items">
-              <p>Recipe by: {recipe.addedBy}</p>
-              <p>Added on: {formatDate(recipe.dateAdded)}</p>
+              <p className="added-by-user">
+                Recipe by <span>{recipe.addedBy}</span>
+              </p>
+              <p className="date">Added on {formatDate(recipe.dateAdded)}</p>
             </div>
           </header>
 
@@ -60,6 +63,38 @@ export default function RecipePage() {
               detailValue={calculateTotalTime(recipe.prepTime, recipe.cookTime)}
             />
             <RecipeDetail detailLabel="Servings:" detailValue={recipe.servings} />
+          </section>
+
+          <section className="ingredients-section">
+            <h2>Ingredients</h2>
+            <ul>
+              {recipe.ingredients.map(({ id, ingredientInfo }) => (
+                <li key={id}>{ingredientInfo}</li>
+              ))}
+            </ul>
+          </section>
+
+          <section className="directions-section">
+            <h2>Directions</h2>
+            <ul>
+              {recipe.directions.map(({ id, explanation, stepNumber }) => (
+                <li key={id}>
+                  <p className="step-number">Step {stepNumber}</p>
+                  <p className="direction">{explanation}</p>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <section className="notes-section">
+            <ul>
+              {recipe.notes.map(({ id, title, noteText }) => (
+                <li key={id}>
+                  <h2>{title}</h2>
+                  <p className="note-text">{noteText}</p>
+                </li>
+              ))}
+            </ul>
           </section>
         </article>
       )}

@@ -8,5 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class IngredientDTO {
+    private Long id;
+
     private String ingredientInfo;
 }

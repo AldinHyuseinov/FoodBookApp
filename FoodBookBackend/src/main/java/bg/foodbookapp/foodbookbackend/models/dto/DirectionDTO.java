@@ -8,6 +8,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class DirectionDTO {
+    private Long id;
+
     private String explanation;
 
     private Integer stepNumber;
