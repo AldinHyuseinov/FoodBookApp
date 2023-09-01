@@ -1,0 +1,24 @@
+.sidebar {
+  max-height: 13em;
+  padding: 1em;
+  box-shadow: var(--basic-shadow);
+  border-radius: 0.5em;
+}
+
+.user-greeting {
+  flex-direction: column;
+}
+
+.user-greeting::after,
+.user-side-nav li::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 1px;
+  background-color: var(--gray-clr);
+}
+
+.user-side-nav li a {
+  padding: 0.5em 1em;
+  text-align: center;
+}

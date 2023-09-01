@@ -1,4 +1,4 @@
-import "../assets/css/error-box.css";
+import "../../assets/css/error-box.css";
 
 export default function ErrorBox({ message }) {
   return (

@@ -87,7 +87,7 @@ export default function Navbar({ isLoggedIn, setLoggedIn }) {
                   </a>
                 </li>
                 <li>
-                  <a href="#">My Profile</a>
+                  <a href="/profile/personal-info">My Profile</a>
                 </li>
                 <li>
                   <a href="/recipes/add">Add Recipe</a>

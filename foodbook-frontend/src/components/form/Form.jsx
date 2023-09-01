@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { loginUser, registerUser } from "../services/userService";
+import { loginUser, registerUser } from "../../services/userService";
 import ErrorMessage from "./ErrorMessage";
 
 export default function Form({ title, buttonLabel, children }) {

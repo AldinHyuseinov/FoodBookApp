@@ -1,14 +1,14 @@
-import DirectionField from "../components/DirectionField";
-import IngredientField from "../components/IngredientField";
+import DirectionField from "../components/add_recipe_page/DirectionField";
+import IngredientField from "../components/add_recipe_page/IngredientField";
 import previewPhoto from "../utils/previewPhotoUtil";
 import "../assets/css/add-recipe-form.css";
 import "../assets/css/form.css";
-import RecipeTimeField from "../components/RecipeTimeField";
+import RecipeTimeField from "../components/add_recipe_page/RecipeTimeField";
 import React, { useMemo, useRef, useState } from "react";
-import RemoveButton from "../components/RemoveButton";
+import RemoveButton from "../components/add_recipe_page/RemoveButton";
 import { addRecipe } from "../services/recipeService";
-import ErrorBox from "../components/ErrorBox";
-import Modal from "../components/Modal";
+import ErrorBox from "../components/add_recipe_page/ErrorBox";
+import Modal from "../components/add_recipe_page/Modal";
 import useTitle from "../hooks/useTitle";
 import calculateTotalTime from "../utils/calculateTotalTime";
 

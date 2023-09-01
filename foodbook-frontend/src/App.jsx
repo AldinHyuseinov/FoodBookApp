@@ -10,6 +10,9 @@ const LoginPage = lazy(() => import("./pages/Login"));
 const RegisterPage = lazy(() => import("./pages/Register"));
 const AddRecipePage = lazy(() => import("./pages/AddRecipe"));
 const RecipePage = lazy(() => import("./pages/Recipe"));
+const ProfilePage = lazy(() => import("./pages/Profile"));
+const PersonalInfo = lazy(() => import("./components/user_profile/PersonalInfo"));
+const PublicInfo = lazy(() => import("./components/user_profile/PublicInfo"));
 const ErrorPage = lazy(() => import("./pages/Error"));
 
 function App() {
@@ -32,6 +35,17 @@ function App() {
               element={isLoggedIn ? <AddRecipePage /> : <Navigate to="/auth/login" />}
             />
             <Route path="/recipe/:id" element={<RecipePage />} />
+            <Route path="/profile" element={<ProfilePage />}>
+              <Route
+                path="personal-info"
+                element={isLoggedIn ? <PersonalInfo /> : <Navigate to="/auth/login" />}
+              />
+              <Route
+                path="public-info"
+                element={isLoggedIn ? <PublicInfo /> : <Navigate to="/auth/login" />}
+              />
+            </Route>
+
             <Route path="*" element={<ErrorPage />} />
           </Routes>
         </Suspense>

@@ -1,0 +1,23 @@
+.personal-info {
+  box-shadow: var(--basic-shadow);
+  padding: 2em;
+  border-radius: 0.5em;
+}
+
+.personal-info header p {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  color: rgba(0, 0, 0, 0.65);
+}
+
+.personal-info-section form {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+button[type="submit"] {
+  align-self: center;
+  margin: 0;
+}

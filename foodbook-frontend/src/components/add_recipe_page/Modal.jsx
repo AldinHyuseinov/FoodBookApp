@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import "../assets/css/modal.css";
+import "../../assets/css/modal.css";
 
 export default function Modal({
   title,
