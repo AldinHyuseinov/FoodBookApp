@@ -1,0 +1,45 @@
+.public-info-section form {
+  display: flex;
+  gap: 1.5em;
+}
+
+#tagline {
+  min-height: 140px;
+  max-width: 440px;
+  min-width: 280px;
+}
+
+.wrapper p {
+  font-weight: 600;
+  padding: 0;
+}
+
+#photo {
+  display: none;
+}
+
+#photo-label {
+  border-radius: 50%;
+  border: 1px solid orange;
+  width: 10em;
+  height: 10em;
+}
+
+.input-wrapper {
+  min-height: 14.5em;
+  min-width: 280px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 0.5em;
+  padding: 0.5em;
+}
+
+@media (width <= 1075px) {
+  .public-info-section form {
+    flex-direction: column;
+  }
+}

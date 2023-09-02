@@ -35,17 +35,13 @@ function App() {
               element={isLoggedIn ? <AddRecipePage /> : <Navigate to="/auth/login" />}
             />
             <Route path="/recipe/:id" element={<RecipePage />} />
-            <Route path="/profile" element={<ProfilePage />}>
-              <Route
-                path="personal-info"
-                element={isLoggedIn ? <PersonalInfo /> : <Navigate to="/auth/login" />}
-              />
-              <Route
-                path="public-info"
-                element={isLoggedIn ? <PublicInfo /> : <Navigate to="/auth/login" />}
-              />
+            <Route
+              path="/profile"
+              element={isLoggedIn ? <ProfilePage /> : <Navigate to="/auth/login" />}
+            >
+              <Route path="personal-info" element={<PersonalInfo />} />
+              <Route path="public-info" element={<PublicInfo />} />
             </Route>
-
             <Route path="*" element={<ErrorPage />} />
           </Routes>
         </Suspense>

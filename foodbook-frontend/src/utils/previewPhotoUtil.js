@@ -1,11 +1,13 @@
-export default function previewPhoto(e) {
+export default function previewPhoto(e, element, defaultBackground, desiredWidth, desiredHeight) {
   const file = e.target.files[0];
+  const elementToModify = element || e.target;
 
   if (
     !file ||
     (file.type !== "image/jpeg" && file.type !== "image/png" && file.type !== "image/webp")
   ) {
-    e.target.style.background = "url(/src/images/recipe-placeholder.png) center";
+    elementToModify.style.background =
+      defaultBackground || "url(/src/assets/images/recipe-placeholder.png) center";
     return;
   }
 
@@ -13,8 +15,8 @@ export default function previewPhoto(e) {
 
   img.onload = () => {
     // Calculate the new width and height for scaling
-    const maxWidth = 289; // Set your desired max width
-    const maxHeight = 232; // Set your desired max height
+    const maxWidth = desiredWidth || 289; // Set your desired max width
+    const maxHeight = desiredHeight || 232; // Set your desired max height
     let width = img.width;
     let height = img.height;
 
@@ -40,7 +42,7 @@ export default function previewPhoto(e) {
     const scaledUrl = canvas.toDataURL(file.type);
 
     // Set the background of the target element to the scaled image
-    e.target.style.background = `url(${scaledUrl}) center no-repeat`;
+    elementToModify.style.background = `url(${scaledUrl}) center no-repeat`;
   };
 
   // Set the image source to the generated URL

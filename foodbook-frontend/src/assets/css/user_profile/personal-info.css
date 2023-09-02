@@ -1,9 +1,3 @@
-.personal-info {
-  box-shadow: var(--basic-shadow);
-  padding: 2em;
-  border-radius: 0.5em;
-}
-
 .personal-info header p {
   display: flex;
   align-items: center;

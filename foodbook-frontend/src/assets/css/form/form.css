@@ -6,9 +6,23 @@ select {
   padding: 0.5em;
 }
 
+label {
+  font-weight: 600;
+}
+
 .form-input {
   display: flex;
   flex-direction: column;
+}
+
+.inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5em;
+}
+
+#photo::file-selector-button {
+  display: none;
 }
 
 button[type="submit"] {

@@ -2,8 +2,11 @@ import UserSidebar from "../components/user_profile/UserSidebar";
 import "../assets/css/user_profile/profile-page.css";
 import "../assets/css/user_profile/user-sidebar.css";
 import { Outlet } from "react-router";
+import useTitle from "../hooks/useTitle";
 
 export default function ProfilePage() {
+  useTitle("Profile | FoodBook");
+
   return (
     <div className="page-container">
       <input type="checkbox" id="nav-toggle" />

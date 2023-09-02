@@ -6,6 +6,13 @@
   gap: 2em;
 }
 
+.personal-info,
+.public-info {
+  box-shadow: var(--basic-shadow);
+  padding: 2em;
+  border-radius: 0.5em;
+}
+
 #nav-toggle,
 #nav-toggle-label {
   display: none;
@@ -41,7 +48,8 @@
     display: none;
   }
 
-  #nav-toggle:checked ~ .personal-info {
+  #nav-toggle:checked ~ .personal-info,
+  #nav-toggle:checked ~ .public-info {
     display: none;
   }
 

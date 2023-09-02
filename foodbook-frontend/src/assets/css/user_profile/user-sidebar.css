@@ -9,6 +9,10 @@
   flex-direction: column;
 }
 
+.user-greeting svg {
+  width: 24px;
+}
+
 .user-greeting::after,
 .user-side-nav li::after {
   content: "";
