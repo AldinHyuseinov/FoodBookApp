@@ -1,5 +1,5 @@
 import { getUserData } from "../../services/userService";
-import "../../assets/css/form.css";
+import "../../assets/css/form/form.css";
 import "../../assets/css/user_profile/personal-info.css";
 
 export default function PersonalInfo() {

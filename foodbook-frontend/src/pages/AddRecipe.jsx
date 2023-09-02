@@ -1,8 +1,8 @@
 import DirectionField from "../components/add_recipe_page/DirectionField";
 import IngredientField from "../components/add_recipe_page/IngredientField";
 import previewPhoto from "../utils/previewPhotoUtil";
-import "../assets/css/add-recipe-form.css";
-import "../assets/css/form.css";
+import "../assets/css/form/add-recipe-form.css";
+import "../assets/css/form/form.css";
 import RecipeTimeField from "../components/add_recipe_page/RecipeTimeField";
 import React, { useMemo, useRef, useState } from "react";
 import RemoveButton from "../components/add_recipe_page/RemoveButton";
