@@ -13,12 +13,12 @@
   border-radius: 0.5em;
 }
 
-#nav-toggle,
-#nav-toggle-label {
+#side-nav-toggle,
+#side-nav-toggle-label {
   display: none;
 }
 
-#nav-toggle-label svg {
+#side-nav-toggle-label svg {
   fill: orange;
 }
 
@@ -44,16 +44,16 @@
     border: 1px solid var(--gray-clr);
   }
 
-  #nav-toggle:checked ~ #nav-toggle-label {
+  #side-nav-toggle:checked ~ #nav-toggle-label {
     display: none;
   }
 
-  #nav-toggle:checked ~ .personal-info,
-  #nav-toggle:checked ~ .public-info {
+  #side-nav-toggle:checked ~ .personal-info,
+  #side-nav-toggle:checked ~ .public-info {
     display: none;
   }
 
-  #nav-toggle:checked ~ .sidebar {
+  #side-nav-toggle:checked ~ .sidebar {
     display: block;
     width: 100%;
   }
