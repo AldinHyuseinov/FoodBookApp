@@ -1,5 +1,12 @@
 .public-info-section form {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1em;
+}
+
+.public-info-section .form-container {
+  display: flex;
   gap: 1.5em;
 }
 
@@ -39,7 +46,7 @@
 }
 
 @media (width <= 1075px) {
-  .public-info-section form {
+  .public-info-section .form-container {
     flex-direction: column;
   }
 }

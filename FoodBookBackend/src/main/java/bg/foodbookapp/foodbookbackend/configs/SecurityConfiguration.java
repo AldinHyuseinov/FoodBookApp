@@ -42,6 +42,8 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests((authorize) -> authorize.requestMatchers(PathRequest.toStaticResources()
                         .atCommonLocations()).permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/recipes").authenticated()
+                        .requestMatchers("/api/users/user-public-info/**",
+                                "/api/users/user-personal-info/**").authenticated()
                         .anyRequest().permitAll())
                 .cors(withDefaults()).csrf(AbstractHttpConfigurer::disable).sessionManagement((sessionManagement) ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

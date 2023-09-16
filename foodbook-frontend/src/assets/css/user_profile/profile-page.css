@@ -33,7 +33,7 @@
     display: none;
   }
 
-  #nav-toggle-label {
+  #side-nav-toggle-label {
     display: flex;
     align-items: center;
     font-weight: 600;
@@ -44,8 +44,15 @@
     border: 1px solid var(--gray-clr);
   }
 
-  #side-nav-toggle:checked ~ #nav-toggle-label {
-    display: none;
+  /* Hacky solution to replace text with just css */
+  #side-nav-toggle:checked ~ #side-nav-toggle-label {
+    color: transparent;
+  }
+
+  #side-nav-toggle:checked ~ #side-nav-toggle-label::after {
+    content: "Go Back";
+    color: #000;
+    margin-left: -75px;
   }
 
   #side-nav-toggle:checked ~ .personal-info,

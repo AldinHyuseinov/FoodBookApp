@@ -2,6 +2,7 @@ package bg.foodbookapp.foodbookbackend.web;
 
 import bg.foodbookapp.foodbookbackend.models.dto.LoginUserDTO;
 import bg.foodbookapp.foodbookbackend.models.dto.RegisterUserDTO;
+import bg.foodbookapp.foodbookbackend.models.dto.UpdateUserPublicInfoDTO;
 import bg.foodbookapp.foodbookbackend.models.dto.UserModel;
 import bg.foodbookapp.foodbookbackend.services.UserService;
 import bg.foodbookapp.foodbookbackend.utils.JwtUtil;
@@ -10,17 +11,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
@@ -74,5 +74,14 @@ public class UserRestController {
         } catch (AuthenticationException ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
+    }
+
+    @PatchMapping(name = "/user-public-info/update", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<?> updatePublicInfo(@ModelAttribute @Valid UpdateUserPublicInfoDTO userPublicInfoDTO,
+                                              BindingResult bindingResult, Principal principal) {
+        hasErrors(bindingResult);
+        userService.updatePublicInfo(userPublicInfoDTO, principal.getName());
+
+        return ResponseEntity.ok().build();
     }
 }

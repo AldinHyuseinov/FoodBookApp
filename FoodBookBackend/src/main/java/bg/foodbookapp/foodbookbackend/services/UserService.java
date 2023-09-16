@@ -1,8 +1,10 @@
 package bg.foodbookapp.foodbookbackend.services;
 
 import bg.foodbookapp.foodbookbackend.models.dto.RegisterUserDTO;
+import bg.foodbookapp.foodbookbackend.models.dto.UpdateUserPublicInfoDTO;
 import bg.foodbookapp.foodbookbackend.models.entities.User;
 import bg.foodbookapp.foodbookbackend.models.enums.Role;
+import bg.foodbookapp.foodbookbackend.models.enums.Type;
 import bg.foodbookapp.foodbookbackend.repositories.UserRepository;
 import bg.foodbookapp.foodbookbackend.repositories.UserRoleRepository;
 import jakarta.annotation.PostConstruct;
@@ -20,6 +22,8 @@ public class UserService {
     private final UserRepository userRepository;
 
     private final UserRoleRepository userRoleRepository;
+
+    private final PictureService pictureService;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -49,6 +53,18 @@ public class UserService {
         User user = mapper.map(registerUserDTO, User.class);
         user.setPassword(passwordEncoder.encode(registerUserDTO.getPassword()));
         user.setRole(userRoleRepository.findUserRoleByRole(Role.USER));
+
+        userRepository.save(user);
+    }
+
+    public void updatePublicInfo(UpdateUserPublicInfoDTO userPublicInfoDTO, String userEmail) {
+        User user = userRepository.findByEmail(userEmail).orElse(null);
+
+        if (userPublicInfoDTO.getPhoto() != null) {
+            user.setProfilePicture(pictureService.addPicture(userPublicInfoDTO.getPhoto(), Type.USER));
+        }
+        user.setUsername(userPublicInfoDTO.getUsername());
+        user.setTagline(userPublicInfoDTO.getTagline());
 
         userRepository.save(user);
     }
