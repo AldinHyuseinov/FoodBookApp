@@ -16,6 +16,10 @@
   min-width: 280px;
 }
 
+.error {
+  width: 280px !important;
+}
+
 .wrapper p {
   font-weight: 600;
   padding: 0;

@@ -1,3 +1,5 @@
+import { sendFormData } from "../utils/fetchData";
+
 const API_URL = "http://localhost:8000/api/users";
 
 export async function loginUser(email, password) {
@@ -42,6 +44,10 @@ export async function registerUser(email, password) {
   location.href = "/auth/login";
 }
 
+export async function updateUserPublicInfo(userData) {
+  await sendFormData(userData, "PATCH", `${API_URL}/user-public-info/update`);
+}
+
 export function getUserData() {
   const userData = JSON.parse(localStorage.getItem("userData"));
 
@@ -53,6 +59,9 @@ export function getUserData() {
       clearUserData();
       return null;
     }
+  } else {
+    location.href = "/auth/login";
+    return null;
   }
 
   return userData;

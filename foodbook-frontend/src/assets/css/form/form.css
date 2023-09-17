@@ -34,10 +34,16 @@ button[type="submit"] {
   background-color: orange;
   cursor: pointer;
   transition: background-color 250ms ease-in;
+  transition: color 250ms ease-in;
 }
 
 button[type="submit"]:hover {
   background-color: darkorange;
+}
+
+button[type="submit"]:disabled {
+  background-color: #d9d9d9;
+  color: #fff;
 }
 
 .visually-hidden {

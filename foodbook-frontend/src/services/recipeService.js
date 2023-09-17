@@ -1,4 +1,4 @@
-import { getUserData } from "./userService";
+import { sendFormData } from "../utils/fetchData";
 
 const API_URL = "http://localhost:8000/api/recipes";
 
@@ -7,26 +7,7 @@ export async function getAllRecipes() {
 }
 
 export async function addRecipe(recipeData) {
-  const userData = getUserData();
-
-  if (!userData) {
-    location.href = "/auth/login";
-    return;
-  }
-
-  const requestOptions = {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${userData.authorization}`,
-    },
-    body: recipeData,
-  };
-
-  const response = await fetch(API_URL, requestOptions);
-
-  if (response.status === 400) {
-    throw new Error(JSON.stringify(await response.json()));
-  }
+  await sendFormData(recipeData, "POST", API_URL);
 
   location.href = "/";
 }

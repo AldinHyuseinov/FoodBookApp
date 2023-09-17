@@ -76,7 +76,7 @@ public class UserRestController {
         }
     }
 
-    @PatchMapping(name = "/user-public-info/update", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PatchMapping(path = "/user-public-info/update", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<?> updatePublicInfo(@ModelAttribute @Valid UpdateUserPublicInfoDTO userPublicInfoDTO,
                                               BindingResult bindingResult, Principal principal) {
         hasErrors(bindingResult);

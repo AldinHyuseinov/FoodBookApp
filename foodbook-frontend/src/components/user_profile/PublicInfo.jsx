@@ -2,6 +2,8 @@ import { useRef, useState } from "react";
 import "../../assets/css/form/form.css";
 import "../../assets/css/user_profile/public-info.css";
 import previewPhoto from "../../utils/previewPhotoUtil";
+import { updateUserPublicInfo } from "../../services/userService";
+import ErrorBox from "../add_recipe_page/ErrorBox";
 
 export default function PublicInfo() {
   const photoLabel = useRef();
@@ -12,6 +14,7 @@ export default function PublicInfo() {
   const [photo, setPhoto] = useState(null);
   const [username, setUsername] = useState("");
   const [tagline, setTagline] = useState("");
+  const [errors, setErrors] = useState({});
 
   const handleSubmitButtonState = (value, type) => {
     const checkIfFieldsEmpty = (username, tagline, photo) => {
@@ -31,12 +34,20 @@ export default function PublicInfo() {
     handler[type]();
   };
 
-  const handleSubmit = () => {
-    const formData = new FormData();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-    formData.append("username", username);
-    formData.append("tagline", tagline);
-    formData.append("photo", photo);
+    const formData = new FormData();
+    username && formData.append("username", username);
+    tagline && formData.append("tagline", tagline);
+    photo && formData.append("photo", photo);
+
+    try {
+      await updateUserPublicInfo(formData);
+      Object.keys(errors).length > 0 && setErrors({});
+    } catch (err) {
+      setErrors(JSON.parse(err.message));
+    }
   };
 
   const handlePhotoChange = (e) => {
@@ -83,6 +94,7 @@ export default function PublicInfo() {
                     value={username}
                     onChange={handleUsernameChange}
                   />
+                  {errors.hasOwnProperty("username") && <ErrorBox message={errors["username"]} />}
                 </div>
 
                 <div className="form-input">
@@ -93,6 +105,7 @@ export default function PublicInfo() {
                     value={tagline}
                     onChange={handleTaglineChange}
                   ></textarea>
+                  {errors.hasOwnProperty("tagline") && <ErrorBox message={errors["tagline"]} />}
                 </div>
               </div>
 
@@ -110,6 +123,7 @@ export default function PublicInfo() {
                   </div>
                   <p>Profile Photo</p>
                 </div>
+                {errors.hasOwnProperty("photo") && <ErrorBox message={errors["photo"]} />}
               </div>
             </div>
             <button type="submit" disabled={submitButtonDisabled}>
