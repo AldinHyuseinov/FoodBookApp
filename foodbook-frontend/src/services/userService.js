@@ -59,9 +59,6 @@ export function getUserData() {
       clearUserData();
       return null;
     }
-  } else {
-    location.href = "/auth/login";
-    return null;
   }
 
   return userData;
