@@ -9,7 +9,7 @@ export async function getAllRecipes() {
 export async function addRecipe(recipeData) {
   await sendFormData(recipeData, "POST", API_URL);
 
-  location.href = "/";
+  location.href = "/?recipe-added=true";
 }
 
 export async function getRecipe(id) {

@@ -1,0 +1,49 @@
+@import url("./alert-message.css");
+
+.success {
+  position: absolute;
+  top: 5em;
+  left: 67%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  background-color: rgb(147, 207, 147);
+  margin-bottom: 1em;
+  padding-inline: 0.5em;
+  animation: hide_alert 10s ease forwards;
+}
+
+@keyframes hide_alert {
+  0% {
+    transform: translateY(0);
+  }
+
+  40% {
+    transform: translateY(10%);
+  }
+
+  80% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-100%);
+  }
+}
+
+.success svg {
+  margin-left: 0.5em;
+}
+
+.close-alert {
+  cursor: pointer;
+}
+
+@media (width <= 765px) {
+  .success {
+    left: 5em;
+  }
+}

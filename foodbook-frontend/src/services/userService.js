@@ -24,7 +24,7 @@ export async function loginUser(email, password) {
 
   setUserData(user);
 
-  location.href = "/";
+  location.href = "/?login-success=true";
 }
 
 export async function registerUser(email, password) {

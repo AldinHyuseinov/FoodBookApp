@@ -1,0 +1,21 @@
+@media (width <= 1097px) {
+  .cards {
+    justify-content: center;
+  }
+}
+
+@media (width <= 870px) {
+  .card-content {
+    justify-content: flex-start;
+  }
+}
+
+@media (width <= 365px) {
+  .card {
+    height: 380px;
+  }
+
+  .card-content {
+    justify-content: space-evenly;
+  }
+}
