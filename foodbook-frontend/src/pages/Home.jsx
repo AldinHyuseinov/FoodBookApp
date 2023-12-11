@@ -5,8 +5,8 @@ import "../assets/css/home_page/home-media-queries.css";
 import Loading from "../components/Loading";
 import useTitle from "../hooks/useTitle";
 import useLoading from "../hooks/useLoading";
-import SuccessAlert from "../components/alerts/SuccessAlert";
 import { useSearchParams } from "react-router-dom";
+import Alert from "../components/alerts/Alert";
 
 export default function HomePage() {
   const [allRecipes, setAllRecipes] = useState([]);
@@ -24,8 +24,10 @@ export default function HomePage() {
 
   return (
     <main>
-      {searchParams.get("login-success") && <SuccessAlert message={"Login Successful. Welcome!"} />}
-      {searchParams.get("recipe-added") && <SuccessAlert message={"Recipe Added!"} />}
+      {searchParams.get("login-success") && (
+        <Alert type={"success"} message={"Login Successful. Welcome!"} />
+      )}
+      {searchParams.get("recipe-added") && <Alert type={"success"} message={"Recipe Added!"} />}
       <h1>All Recipes</h1>
 
       <div className="cards">

@@ -1,6 +1,6 @@
 @import url("./alert-message.css");
 
-.success {
+.alert {
   position: absolute;
   top: 5em;
   left: 67%;
@@ -8,10 +8,17 @@
   align-items: center;
   justify-content: center;
   width: fit-content;
-  background-color: rgb(147, 207, 147);
   margin-bottom: 1em;
   padding-inline: 0.5em;
   animation: hide_alert 10s ease forwards;
+}
+
+.success {
+  background-color: rgb(147, 207, 147);
+}
+
+.warning {
+  background-color: rgb(255, 196, 0);
 }
 
 @keyframes hide_alert {
@@ -34,7 +41,7 @@
   }
 }
 
-.success svg {
+.alert svg {
   margin-left: 0.5em;
 }
 
@@ -43,7 +50,7 @@
 }
 
 @media (width <= 765px) {
-  .success {
+  .alert {
     left: 5em;
   }
 }

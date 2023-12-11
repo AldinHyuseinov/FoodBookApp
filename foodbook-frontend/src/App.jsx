@@ -32,12 +32,16 @@ function App() {
             />
             <Route
               path="/recipes/add"
-              element={isLoggedIn ? <AddRecipePage /> : <Navigate to="/auth/login" />}
+              element={
+                isLoggedIn ? <AddRecipePage /> : <Navigate to="/auth/login/?login-needed=true" />
+              }
             />
             <Route path="/recipe/:id" element={<RecipePage />} />
             <Route
               path="/profile"
-              element={isLoggedIn ? <ProfilePage /> : <Navigate to="/auth/login" />}
+              element={
+                isLoggedIn ? <ProfilePage /> : <Navigate to="/auth/login/?login-needed=true" />
+              }
             >
               <Route path="personal-info" element={<PersonalInfo />} />
               <Route path="public-info" element={<PublicInfo />} />
