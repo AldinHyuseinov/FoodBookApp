@@ -2,6 +2,7 @@ package bg.foodbookapp.foodbookbackend.services;
 
 import bg.foodbookapp.foodbookbackend.models.dto.RegisterUserDTO;
 import bg.foodbookapp.foodbookbackend.models.dto.UpdateUserPublicInfoDTO;
+import bg.foodbookapp.foodbookbackend.models.entities.Picture;
 import bg.foodbookapp.foodbookbackend.models.entities.User;
 import bg.foodbookapp.foodbookbackend.models.enums.Role;
 import bg.foodbookapp.foodbookbackend.models.enums.Type;
@@ -59,13 +60,25 @@ public class UserService {
 
     public void updatePublicInfo(UpdateUserPublicInfoDTO userPublicInfoDTO, String userEmail) {
         User user = userRepository.findByEmail(userEmail).orElse(null);
+        Picture previousUserPicture = user.getProfilePicture();
 
         if (userPublicInfoDTO.getPhoto() != null) {
             user.setProfilePicture(pictureService.addPicture(userPublicInfoDTO.getPhoto(), Type.USER));
         }
-        user.setUsername(userPublicInfoDTO.getUsername());
-        user.setTagline(userPublicInfoDTO.getTagline());
+
+        if (userPublicInfoDTO.getUsername() != null) {
+            user.setUsername(userPublicInfoDTO.getUsername());
+        }
+
+        if (userPublicInfoDTO.getTagline() != null) {
+            user.setTagline(userPublicInfoDTO.getTagline());
+        }
 
         userRepository.save(user);
+
+        if (previousUserPicture != null) {
+            pictureService.removePicture(previousUserPicture);
+        }
+
     }
 }

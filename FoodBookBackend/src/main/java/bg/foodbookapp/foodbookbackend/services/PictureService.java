@@ -29,4 +29,8 @@ public class PictureService {
 
         return pictureRepository.save(picture);
     }
+
+    public void removePicture(Picture picture) {
+        pictureRepository.delete(picture);
+    }
 }
