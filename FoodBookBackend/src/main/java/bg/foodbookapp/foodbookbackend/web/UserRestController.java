@@ -84,4 +84,10 @@ public class UserRestController {
 
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/user/picture")
+    public ResponseEntity<?> getUserPicture(Principal principal) {
+        // Todo
+        return ResponseEntity.ok().build();
+    }
 }

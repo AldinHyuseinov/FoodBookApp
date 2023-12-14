@@ -7,8 +7,9 @@ import ErrorBox from "../add_recipe_page/ErrorBox";
 
 export default function PublicInfo() {
   const photoLabel = useRef();
-  const photoLabelBackground =
+  const defaultLabelBackground =
     '#fff url(\'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" height="2em" fill="orange" viewBox="0 0 512 512"%3E%3Cpath d="M149.1 64.8L138.7 96H64C28.7 96 0 124.7 0 160V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H373.3L362.9 64.8C356.4 45.2 338.1 32 317.4 32H194.6c-20.7 0-39 13.2-45.5 32.8zM256 192a96 96 0 1 1 0 192 96 96 0 1 1 0-192z"/%3E%3C/svg%3E\') center no-repeat';
+  const [photoLabelBackground, setPhotoLabelBackground] = useState(defaultLabelBackground);
 
   const [submitButtonDisabled, setSubmitButtonDisabled] = useState(true);
   const [photo, setPhoto] = useState(null);
@@ -112,7 +113,25 @@ export default function PublicInfo() {
               <div className="wrapper">
                 <p>Add an Image</p>
                 <div className="input-wrapper">
-                  <div className="form-input">
+                  <div
+                    className="form-input"
+                    onDragOver={(e) => {
+                      e.preventDefault();
+                      setPhotoLabelBackground(
+                        `#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='2em' fill='orange' viewBox='0 0 512 512'%3E%3C!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--%3E%3Cpath d='M288 109.3V352c0 17.7-14.3 32-32 32s-32-14.3-32-32V109.3l-73.4 73.4c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l128-128c12.5-12.5 32.8-12.5 45.3 0l128 128c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L288 109.3zM64 352H192c0 35.3 28.7 64 64 64s64-28.7 64-64H448c35.3 0 64 28.7 64 64v32c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V416c0-35.3 28.7-64 64-64zM432 456a24 24 0 1 0 0-48 24 24 0 1 0 0 48z'/%3E%3C/svg%3E") center no-repeat`
+                      );
+                    }}
+                    onDragLeave={() => setPhotoLabelBackground(defaultLabelBackground)}
+                    onDrop={(e) => {
+                      e.preventDefault();
+                      setPhotoLabelBackground(defaultLabelBackground);
+
+                      const file = e.dataTransfer.files[0];
+                      if (file) {
+                        handlePhotoChange({ target: { files: [file] } });
+                      }
+                    }}
+                  >
                     <label
                       style={{ background: photoLabelBackground }}
                       htmlFor="photo"
