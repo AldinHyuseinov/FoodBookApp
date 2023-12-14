@@ -45,7 +45,7 @@ export async function registerUser(email, password) {
 }
 
 export async function updateUserPublicInfo(userData) {
-  await sendFormData(userData, "PATCH", `${API_URL}/user-public-info/update`);
+  await sendFormData(userData, "PATCH", `${API_URL}/user/public-info/update`);
 }
 
 export function getUserData() {
