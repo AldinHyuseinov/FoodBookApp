@@ -1,5 +1,6 @@
 package bg.foodbookapp.foodbookbackend.services;
 
+import bg.foodbookapp.foodbookbackend.models.dto.PictureDTO;
 import bg.foodbookapp.foodbookbackend.models.dto.RegisterUserDTO;
 import bg.foodbookapp.foodbookbackend.models.dto.UpdateUserPublicInfoDTO;
 import bg.foodbookapp.foodbookbackend.models.entities.Picture;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Base64;
 import java.util.List;
 
 @Service
@@ -79,6 +81,20 @@ public class UserService {
         if (previousUserPicture != null) {
             pictureService.removePicture(previousUserPicture);
         }
+    }
 
+    public PictureDTO getUserPicture(String userEmail) {
+        User user = userRepository.findByEmail(userEmail).orElse(null);
+        Picture picture = user.getProfilePicture();
+
+        if (picture != null) {
+            String base64 = Base64.getEncoder().encodeToString(picture.getPicture());
+            PictureDTO pictureDTO = new PictureDTO();
+            pictureDTO.setPicture("data:" + picture.getFileType() + ";base64," + base64);
+
+            return pictureDTO;
+        }
+
+        return null;
     }
 }

@@ -30,6 +30,13 @@ li {
   gap: 0.5em;
 }
 
+.media-user-picture {
+  width: 1.5em;
+  border-radius: 50%;
+  overflow: hidden;
+  object-fit: cover;
+}
+
 .icon {
   padding: 0;
   margin-top: 0.3em;

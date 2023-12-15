@@ -1,9 +1,6 @@
 package bg.foodbookapp.foodbookbackend.web;
 
-import bg.foodbookapp.foodbookbackend.models.dto.LoginUserDTO;
-import bg.foodbookapp.foodbookbackend.models.dto.RegisterUserDTO;
-import bg.foodbookapp.foodbookbackend.models.dto.UpdateUserPublicInfoDTO;
-import bg.foodbookapp.foodbookbackend.models.dto.UserModel;
+import bg.foodbookapp.foodbookbackend.models.dto.*;
 import bg.foodbookapp.foodbookbackend.services.UserService;
 import bg.foodbookapp.foodbookbackend.utils.JwtUtil;
 import jakarta.validation.Valid;
@@ -85,9 +82,14 @@ public class UserRestController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/user/picture")
-    public ResponseEntity<?> getUserPicture(Principal principal) {
-        // Todo
-        return ResponseEntity.ok().build();
+    @GetMapping("/user/public-info/picture")
+    public ResponseEntity<PictureDTO> getUserPicture(Principal principal) {
+        PictureDTO base64Picture = userService.getUserPicture(principal.getName());
+
+        if (base64Picture != null) {
+            return ResponseEntity.ok(base64Picture);
+        }
+
+        return ResponseEntity.notFound().build();
     }
 }

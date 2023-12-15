@@ -48,6 +48,22 @@ export async function updateUserPublicInfo(userData) {
   await sendFormData(userData, "PATCH", `${API_URL}/user/public-info/update`);
 }
 
+export async function getUserPicture() {
+  const userData = getUserData();
+
+  const requestOptions = {
+    headers: {
+      Authorization: `Bearer ${userData.authorization}`,
+    },
+  };
+
+  const response = await fetch(`${API_URL}/user/public-info/picture`, requestOptions);
+
+  if (response.status !== 404) {
+    return await response.json();
+  }
+}
+
 export function getUserData() {
   const userData = JSON.parse(localStorage.getItem("userData"));
 
