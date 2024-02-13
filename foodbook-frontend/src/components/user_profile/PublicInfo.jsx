@@ -4,6 +4,7 @@ import "../../assets/css/user_profile/public-info.css";
 import previewPhoto from "../../utils/previewPhotoUtil";
 import { updateUserPublicInfo } from "../../services/userService";
 import ErrorBox from "../add_recipe_page/ErrorBox";
+import usePublicInfo from "../../hooks/usePublicInfo";
 
 export default function PublicInfo() {
   const photoLabel = useRef();
@@ -13,6 +14,7 @@ export default function PublicInfo() {
 
   const [submitButtonDisabled, setSubmitButtonDisabled] = useState(true);
   const [photo, setPhoto] = useState(null);
+  const publicInfo = usePublicInfo(true);
   const [username, setUsername] = useState("");
   const [tagline, setTagline] = useState("");
   const [errors, setErrors] = useState({});
@@ -63,6 +65,7 @@ export default function PublicInfo() {
     const value = e.target.value;
 
     handleSubmitButtonState(value, "username");
+    publicInfo.username = "";
     setUsername(value);
   };
 
@@ -70,6 +73,7 @@ export default function PublicInfo() {
     const value = e.target.value;
 
     handleSubmitButtonState(value, "tagline");
+    publicInfo.tagline = "";
     setTagline(value);
   };
 
@@ -92,7 +96,7 @@ export default function PublicInfo() {
                   <input
                     type="text"
                     id="username"
-                    value={username}
+                    value={username || publicInfo.username}
                     onChange={handleUsernameChange}
                   />
                   {errors.hasOwnProperty("username") && <ErrorBox message={errors["username"]} />}
@@ -103,7 +107,7 @@ export default function PublicInfo() {
                   <textarea
                     id="tagline"
                     placeholder="This is you in a nutshell"
-                    value={tagline}
+                    value={tagline || publicInfo.tagline}
                     onChange={handleTaglineChange}
                   ></textarea>
                   {errors.hasOwnProperty("tagline") && <ErrorBox message={errors["tagline"]} />}

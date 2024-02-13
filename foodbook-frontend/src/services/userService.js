@@ -48,16 +48,12 @@ export async function updateUserPublicInfo(userData) {
   await sendFormData(userData, "PATCH", `${API_URL}/user/public-info/update`);
 }
 
+export async function getPublicInfo() {
+  return await (await fetch(`${API_URL}/user/public-info`, getHeader())).json();
+}
+
 export async function getUserPicture() {
-  const userData = getUserData();
-
-  const requestOptions = {
-    headers: {
-      Authorization: `Bearer ${userData.authorization}`,
-    },
-  };
-
-  const response = await fetch(`${API_URL}/user/public-info/picture`, requestOptions);
+  const response = await fetch(`${API_URL}/user/public-info/picture`, getHeader());
 
   if (response.status !== 404) {
     return await response.json();
@@ -100,5 +96,15 @@ function getRequestOptions(email, password) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(data),
+  };
+}
+
+function getHeader() {
+  const userData = getUserData();
+
+  return {
+    headers: {
+      Authorization: `Bearer ${userData.authorization}`,
+    },
   };
 }

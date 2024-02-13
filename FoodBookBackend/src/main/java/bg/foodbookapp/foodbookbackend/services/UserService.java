@@ -1,6 +1,7 @@
 package bg.foodbookapp.foodbookbackend.services;
 
 import bg.foodbookapp.foodbookbackend.models.dto.PictureDTO;
+import bg.foodbookapp.foodbookbackend.models.dto.PublicInfoDTO;
 import bg.foodbookapp.foodbookbackend.models.dto.RegisterUserDTO;
 import bg.foodbookapp.foodbookbackend.models.dto.UpdateUserPublicInfoDTO;
 import bg.foodbookapp.foodbookbackend.models.entities.Picture;
@@ -81,6 +82,10 @@ public class UserService {
         if (previousUserPicture != null) {
             pictureService.removePicture(previousUserPicture);
         }
+    }
+
+    public PublicInfoDTO getPublicInfo(String userEmail) {
+        return mapper.map(userRepository.findByEmail(userEmail).orElse(null), PublicInfoDTO.class);
     }
 
     public PictureDTO getUserPicture(String userEmail) {

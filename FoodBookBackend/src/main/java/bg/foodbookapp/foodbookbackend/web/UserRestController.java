@@ -73,6 +73,11 @@ public class UserRestController {
         }
     }
 
+    @GetMapping("/user/public-info")
+    public ResponseEntity<PublicInfoDTO> publicInfo(Principal principal) {
+        return ResponseEntity.ok(userService.getPublicInfo(principal.getName()));
+    }
+
     @PatchMapping(path = "/user/public-info/update", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<?> updatePublicInfo(@ModelAttribute @Valid UpdateUserPublicInfoDTO userPublicInfoDTO,
                                               BindingResult bindingResult, Principal principal) {
