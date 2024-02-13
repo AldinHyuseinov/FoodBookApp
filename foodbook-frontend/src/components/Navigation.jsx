@@ -1,17 +1,10 @@
-import { useEffect, useState } from "react";
-import { clearUserData, getUserPicture } from "../services/userService";
+import { useState } from "react";
+import { clearUserData } from "../services/userService";
+import usePicture from "../hooks/usePicture";
 
 export default function Navbar({ isLoggedIn, setLoggedIn }) {
   const [checked, setChecked] = useState(false);
-  const [userPicture, setUserPicture] = useState("");
-
-  useEffect(() => {
-    const fetchUserPicture = async () => {
-      const fetchedUserPicture = await getUserPicture();
-      setUserPicture(fetchedUserPicture);
-    };
-    isLoggedIn && fetchUserPicture();
-  }, []);
+  const userPicture = usePicture(isLoggedIn);
 
   const handleLogout = () => {
     clearUserData();
@@ -101,7 +94,7 @@ export default function Navbar({ isLoggedIn, setLoggedIn }) {
               <a href="#">
                 {userPicture ? (
                   <div className="media-user-picture">
-                    <img src={userPicture.picture} alt="User Picture" />
+                    <img src={userPicture} alt="User Picture" />
                   </div>
                 ) : (
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
