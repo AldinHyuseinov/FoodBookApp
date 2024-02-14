@@ -10,7 +10,7 @@ export default function usePublicInfo(isLoggedIn) {
       setUserPublicInfo(fetchedUserPublicInfo);
     };
     isLoggedIn && fetchUserPublicInfo();
-  }, [isLoggedIn]);
+  }, []);
 
   return userPublicInfo;
 }

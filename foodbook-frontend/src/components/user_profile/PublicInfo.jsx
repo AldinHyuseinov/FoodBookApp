@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "../../assets/css/form/form.css";
 import "../../assets/css/user_profile/public-info.css";
 import previewPhoto from "../../utils/previewPhotoUtil";
@@ -18,6 +18,10 @@ export default function PublicInfo() {
   const [username, setUsername] = useState("");
   const [tagline, setTagline] = useState("");
   const [errors, setErrors] = useState({});
+
+  // Populate input fields when data is fetched
+  useEffect(() => setUsername(publicInfo.username), [publicInfo.username]);
+  useEffect(() => setTagline(publicInfo.tagline), [publicInfo.tagline]);
 
   const handleSubmitButtonState = (value, type) => {
     const checkIfFieldsEmpty = (username, tagline, photo) => {
@@ -65,7 +69,6 @@ export default function PublicInfo() {
     const value = e.target.value;
 
     handleSubmitButtonState(value, "username");
-    publicInfo.username = "";
     setUsername(value);
   };
 
@@ -73,11 +76,9 @@ export default function PublicInfo() {
     const value = e.target.value;
 
     handleSubmitButtonState(value, "tagline");
-    publicInfo.tagline = "";
     setTagline(value);
   };
 
-  // Todo
   return (
     <div className="public-info">
       <header>
@@ -96,7 +97,7 @@ export default function PublicInfo() {
                   <input
                     type="text"
                     id="username"
-                    value={username || publicInfo.username}
+                    value={username}
                     onChange={handleUsernameChange}
                   />
                   {errors.hasOwnProperty("username") && <ErrorBox message={errors["username"]} />}
@@ -107,7 +108,7 @@ export default function PublicInfo() {
                   <textarea
                     id="tagline"
                     placeholder="This is you in a nutshell"
-                    value={tagline || publicInfo.tagline}
+                    value={tagline}
                     onChange={handleTaglineChange}
                   ></textarea>
                   {errors.hasOwnProperty("tagline") && <ErrorBox message={errors["tagline"]} />}
