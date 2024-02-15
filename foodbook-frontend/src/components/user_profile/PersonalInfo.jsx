@@ -1,18 +1,41 @@
-import { getUserData } from "../../services/userService";
+import { getUserData, updateUserPersonalInfo } from "../../services/userService";
 import "../../assets/css/form/form.css";
 import "../../assets/css/user_profile/personal-info.css";
 import { useState } from "react";
 import useButtonState from "../../hooks/useButtonState";
+import ErrorBox from "../add_recipe_page/ErrorBox";
 
 export default function PersonalInfo() {
   const [submitButtonDisabled, handleButtonState] = useButtonState();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [birthDate, setBirthDate] = useState("");
+  const [errors, setErrors] = useState({});
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Todo
+
+    const data = {};
+
+    if (firstName) {
+      data["firstName"] = firstName;
+    }
+
+    if (lastName) {
+      data["lastName"] = lastName;
+    }
+
+    if (birthDate) {
+      data["birthDate"] = birthDate;
+    }
+
+    try {
+      await updateUserPersonalInfo(data);
+      Object.keys(errors).length > 0 && setErrors({});
+      location.reload();
+    } catch (err) {
+      setErrors(JSON.parse(err.message));
+    }
   };
 
   const handleFirstNameChange = (e) => {
@@ -66,11 +89,13 @@ export default function PersonalInfo() {
                 value={firstName}
                 onChange={handleFirstNameChange}
               />
+              {errors.hasOwnProperty("firstName") && <ErrorBox message={errors["firstName"]} />}
             </div>
 
             <div className="form-input">
               <label htmlFor="last-name">Last Name</label>
               <input type="text" id="last-name" value={lastName} onChange={handleLastNameChange} />
+              {errors.hasOwnProperty("lastName") && <ErrorBox message={errors["lastName"]} />}
             </div>
 
             <div className="form-input">
@@ -81,6 +106,7 @@ export default function PersonalInfo() {
                 value={birthDate}
                 onChange={handleBirthDateChange}
               />
+              {errors.hasOwnProperty("birthDate") && <ErrorBox message={errors["birthDate"]} />}
             </div>
             <button type="submit" disabled={submitButtonDisabled}>
               Save

@@ -1,9 +1,6 @@
 package bg.foodbookapp.foodbookbackend.services;
 
-import bg.foodbookapp.foodbookbackend.models.dto.PictureDTO;
-import bg.foodbookapp.foodbookbackend.models.dto.PublicInfoDTO;
-import bg.foodbookapp.foodbookbackend.models.dto.RegisterUserDTO;
-import bg.foodbookapp.foodbookbackend.models.dto.UpdateUserPublicInfoDTO;
+import bg.foodbookapp.foodbookbackend.models.dto.*;
 import bg.foodbookapp.foodbookbackend.models.entities.Picture;
 import bg.foodbookapp.foodbookbackend.models.entities.User;
 import bg.foodbookapp.foodbookbackend.models.enums.Role;
@@ -17,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Base64;
 import java.util.List;
 
@@ -63,25 +61,50 @@ public class UserService {
 
     public void updatePublicInfo(UpdateUserPublicInfoDTO userPublicInfoDTO, String userEmail) {
         User user = userRepository.findByEmail(userEmail).orElse(null);
+
         Picture previousUserPicture = user.getProfilePicture();
+        String username = userPublicInfoDTO.getUsername();
+        String tagline = userPublicInfoDTO.getTagline();
 
         if (userPublicInfoDTO.getPhoto() != null) {
             user.setProfilePicture(pictureService.addPicture(userPublicInfoDTO.getPhoto(), Type.USER));
+
+            if (previousUserPicture != null) {
+                pictureService.removePicture(previousUserPicture);
+            }
         }
 
-        if (userPublicInfoDTO.getUsername() != null) {
-            user.setUsername(userPublicInfoDTO.getUsername());
+        if (username != null) {
+            user.setUsername(username);
         }
 
-        if (userPublicInfoDTO.getTagline() != null) {
-            user.setTagline(userPublicInfoDTO.getTagline());
+        if (tagline != null) {
+            user.setTagline(tagline);
         }
 
         userRepository.save(user);
+    }
 
-        if (previousUserPicture != null) {
-            pictureService.removePicture(previousUserPicture);
+    public void updatePersonalInfo(UpdateUserPersonalInfoDTO userPersonalInfoDTO, String userEmail) {
+        User user = userRepository.findByEmail(userEmail).orElse(null);
+
+        String firstName = userPersonalInfoDTO.getFirstName();
+        String lastName = userPersonalInfoDTO.getLastName();
+        LocalDate birthDate = userPersonalInfoDTO.getBirthDate();
+
+        if (firstName != null) {
+            user.setFirstName(firstName);
         }
+
+        if (lastName != null) {
+            user.setLastName(lastName);
+        }
+
+        if (birthDate != null) {
+            user.setBirthDate(birthDate);
+        }
+
+        userRepository.save(user);
     }
 
     public PublicInfoDTO getPublicInfo(String userEmail) {

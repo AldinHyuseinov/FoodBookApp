@@ -54,6 +54,17 @@ export async function updateUserPublicInfo(userData) {
   await sendFormData(userData, "PATCH", `${API_URL}/user/public-info/update`);
 }
 
+export async function updateUserPersonalInfo(userData) {
+  const response = await fetch(
+    `${API_URL}/user/personal-info/update`,
+    getRequestOptions(userData, "PATCH", true)
+  );
+
+  if (response.status === 400) {
+    throw new Error(JSON.stringify(await response.json()));
+  }
+}
+
 export async function getPublicInfo() {
   return await (await fetch(`${API_URL}/user/public-info`, getAuthHeader())).json();
 }

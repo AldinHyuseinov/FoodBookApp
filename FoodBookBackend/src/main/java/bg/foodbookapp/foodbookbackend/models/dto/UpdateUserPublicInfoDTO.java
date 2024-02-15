@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Getter
 @Setter
 public class UpdateUserPublicInfoDTO {
-    @Size(min = 3, max = 250, message = "Username should be between 3 and 250 characters")
+    @Size(min = 3, max = 32, message = "Username should be between 3 and 32 characters")
     private String username;
 
     @Size(min = 5, max = 500, message = "Tagline should be between 5 and 500 characters")

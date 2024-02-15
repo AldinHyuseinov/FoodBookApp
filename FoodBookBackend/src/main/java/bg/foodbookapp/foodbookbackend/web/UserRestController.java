@@ -87,6 +87,15 @@ public class UserRestController {
         return ResponseEntity.ok().build();
     }
 
+    @PatchMapping("/user/personal-info/update")
+    public ResponseEntity<?> updatePersonalInfo(@RequestBody @Valid UpdateUserPersonalInfoDTO userPersonalInfoDTO,
+                                              BindingResult bindingResult, Principal principal) {
+        hasErrors(bindingResult);
+        userService.updatePersonalInfo(userPersonalInfoDTO, principal.getName());
+
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping("/user/public-info/picture")
     public ResponseEntity<PictureDTO> getUserPicture(Principal principal) {
         PictureDTO base64Picture = userService.getUserPicture(principal.getName());
