@@ -3,7 +3,7 @@ import "../../assets/css/form/form.css";
 import "../../assets/css/user_profile/public-info.css";
 import previewPhoto from "../../utils/previewPhotoUtil";
 import { updateUserPublicInfo } from "../../services/userService";
-import ErrorBox from "../add_recipe_page/ErrorBox";
+import ErrorBox from "../form/ErrorBox.jsx";
 import usePublicInfo from "../../hooks/usePublicInfo";
 import useButtonState from "../../hooks/useButtonState";
 

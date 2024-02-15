@@ -7,7 +7,7 @@ import RecipeTimeField from "../components/add_recipe_page/RecipeTimeField";
 import React, { useMemo, useRef, useState } from "react";
 import RemoveButton from "../components/add_recipe_page/RemoveButton";
 import { addRecipe } from "../services/recipeService";
-import ErrorBox from "../components/add_recipe_page/ErrorBox";
+import ErrorBox from "../components/form/ErrorBox.jsx";
 import Modal from "../components/add_recipe_page/Modal";
 import useTitle from "../hooks/useTitle";
 import calculateTotalTime from "../utils/calculateTotalTime";

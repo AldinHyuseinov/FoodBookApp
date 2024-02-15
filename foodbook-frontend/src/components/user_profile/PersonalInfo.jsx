@@ -3,7 +3,7 @@ import "../../assets/css/form/form.css";
 import "../../assets/css/user_profile/personal-info.css";
 import { useState } from "react";
 import useButtonState from "../../hooks/useButtonState";
-import ErrorBox from "../add_recipe_page/ErrorBox";
+import ErrorBox from "../form/ErrorBox.jsx";
 
 export default function PersonalInfo() {
   const [submitButtonDisabled, handleButtonState] = useButtonState();
