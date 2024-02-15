@@ -3,7 +3,10 @@ import { sendFormData } from "../utils/fetchData";
 const API_URL = "http://localhost:8000/api/users";
 
 export async function loginUser(email, password) {
-  const response = await fetch(`${API_URL}/login`, getRequestOptions(email, password));
+  const response = await fetch(
+    `${API_URL}/login`,
+    getRequestOptions({ email, password }, "POST", false)
+  );
 
   if (response.status === 401) {
     throw new Error("Invalid username or password.");
@@ -28,7 +31,10 @@ export async function loginUser(email, password) {
 }
 
 export async function registerUser(email, password) {
-  const response = await fetch(`${API_URL}/register`, getRequestOptions(email, password));
+  const response = await fetch(
+    `${API_URL}/register`,
+    getRequestOptions({ email, password }, "POST", false)
+  );
 
   if (response.status === 400) {
     const err = await response.json();
@@ -49,11 +55,11 @@ export async function updateUserPublicInfo(userData) {
 }
 
 export async function getPublicInfo() {
-  return await (await fetch(`${API_URL}/user/public-info`, getHeader())).json();
+  return await (await fetch(`${API_URL}/user/public-info`, getAuthHeader())).json();
 }
 
 export async function getUserPicture() {
-  const response = await fetch(`${API_URL}/user/public-info/picture`, getHeader());
+  const response = await fetch(`${API_URL}/user/public-info/picture`, getAuthHeader());
 
   if (response.status !== 404) {
     return await response.json();
@@ -84,22 +90,23 @@ export function clearUserData() {
   localStorage.removeItem("userData");
 }
 
-function getRequestOptions(email, password) {
-  const data = {
-    email,
-    password,
-  };
-
-  return {
-    method: "POST",
+function getRequestOptions(data, method, needsAuth) {
+  const requestOptions = {
+    method,
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(data),
   };
+
+  if (needsAuth) {
+    requestOptions.headers["Authorization"] = getAuthHeader().headers.Authorization;
+  }
+
+  return requestOptions;
 }
 
-function getHeader() {
+function getAuthHeader() {
   const userData = getUserData();
 
   return {

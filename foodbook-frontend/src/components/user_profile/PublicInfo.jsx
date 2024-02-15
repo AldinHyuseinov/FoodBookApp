@@ -35,6 +35,7 @@ export default function PublicInfo() {
     try {
       await updateUserPublicInfo(formData);
       Object.keys(errors).length > 0 && setErrors({});
+      location.reload();
     } catch (err) {
       setErrors(JSON.parse(err.message));
     }
