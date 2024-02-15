@@ -87,9 +87,14 @@ public class UserRestController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/user/personal-info")
+    public ResponseEntity<PersonalInfoDTO> personalInfo(Principal principal) {
+        return ResponseEntity.ok(userService.getPersonalInfo(principal.getName()));
+    }
+
     @PatchMapping("/user/personal-info/update")
     public ResponseEntity<?> updatePersonalInfo(@RequestBody @Valid UpdateUserPersonalInfoDTO userPersonalInfoDTO,
-                                              BindingResult bindingResult, Principal principal) {
+                                                BindingResult bindingResult, Principal principal) {
         hasErrors(bindingResult);
         userService.updatePersonalInfo(userPersonalInfoDTO, principal.getName());
 

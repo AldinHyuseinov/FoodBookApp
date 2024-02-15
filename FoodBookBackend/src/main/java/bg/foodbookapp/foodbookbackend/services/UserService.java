@@ -111,6 +111,10 @@ public class UserService {
         return mapper.map(userRepository.findByEmail(userEmail).orElse(null), PublicInfoDTO.class);
     }
 
+    public PersonalInfoDTO getPersonalInfo(String userEmail) {
+        return mapper.map(userRepository.findByEmail(userEmail).orElse(null), PersonalInfoDTO.class);
+    }
+
     public PictureDTO getUserPicture(String userEmail) {
         User user = userRepository.findByEmail(userEmail).orElse(null);
         Picture picture = user.getProfilePicture();

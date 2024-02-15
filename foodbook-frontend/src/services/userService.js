@@ -69,6 +69,10 @@ export async function getPublicInfo() {
   return await (await fetch(`${API_URL}/user/public-info`, getAuthHeader())).json();
 }
 
+export async function getPersonalInfo() {
+  return await (await fetch(`${API_URL}/user/personal-info`, getAuthHeader())).json();
+}
+
 export async function getUserPicture() {
   const response = await fetch(`${API_URL}/user/public-info/picture`, getAuthHeader());
 

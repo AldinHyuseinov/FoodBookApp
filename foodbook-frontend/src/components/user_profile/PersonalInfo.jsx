@@ -1,16 +1,23 @@
 import { getUserData, updateUserPersonalInfo } from "../../services/userService";
 import "../../assets/css/form/form.css";
 import "../../assets/css/user_profile/personal-info.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useButtonState from "../../hooks/useButtonState";
 import ErrorBox from "../form/ErrorBox.jsx";
+import useInfo from "../../hooks/useInfo.js";
 
 export default function PersonalInfo() {
   const [submitButtonDisabled, handleButtonState] = useButtonState();
+  const personalInfo = useInfo("personal", true);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [birthDate, setBirthDate] = useState("");
   const [errors, setErrors] = useState({});
+
+  // Populate input fields when data is fetched
+  useEffect(() => setFirstName(personalInfo.firstName), [personalInfo.firstName]);
+  useEffect(() => setLastName(personalInfo.lastName), [personalInfo.lastName]);
+  useEffect(() => setBirthDate(personalInfo.birthDate), [personalInfo.birthDate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

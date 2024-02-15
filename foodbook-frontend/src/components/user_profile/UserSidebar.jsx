@@ -1,10 +1,10 @@
 import usePicture from "../../hooks/usePicture";
-import usePublicInfo from "../../hooks/usePublicInfo";
+import useInfo from "../../hooks/useInfo";
 import { getUserData } from "../../services/userService";
 
 export default function UserSidebar() {
   const userPicture = usePicture(true);
-  const { username } = usePublicInfo(true);
+  const { username } = useInfo("public", true);
 
   return (
     <aside className="sidebar">

@@ -4,7 +4,7 @@ import "../../assets/css/user_profile/public-info.css";
 import previewPhoto from "../../utils/previewPhotoUtil";
 import { updateUserPublicInfo } from "../../services/userService";
 import ErrorBox from "../form/ErrorBox.jsx";
-import usePublicInfo from "../../hooks/usePublicInfo";
+import useInfo from "../../hooks/useInfo.js";
 import useButtonState from "../../hooks/useButtonState";
 
 export default function PublicInfo() {
@@ -15,7 +15,7 @@ export default function PublicInfo() {
 
   const [submitButtonDisabled, handleButtonState] = useButtonState();
   const [photo, setPhoto] = useState(null);
-  const publicInfo = usePublicInfo(true);
+  const publicInfo = useInfo("public", true);
   const [username, setUsername] = useState("");
   const [tagline, setTagline] = useState("");
   const [errors, setErrors] = useState({});
