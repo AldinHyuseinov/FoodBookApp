@@ -43,6 +43,10 @@ export default function Navbar({ isLoggedIn, setLoggedIn }) {
       <nav className="main-nav">
         <ul role="navigation" className="nav">
           <li>
+            <a href="/just-recipe">Just Recipe</a>
+          </li>
+
+          <li>
             <a href="#">Recipes by Course</a>
 
             <ul>

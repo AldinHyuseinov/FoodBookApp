@@ -4,6 +4,7 @@ import Navigation from "./components/Navigation";
 import Loading from "./components/Loading";
 import Footer from "./components/Footer";
 import { getUserData } from "./services/userService";
+import JustRecipe from "./pages/JustRecipe";
 
 const HomePage = lazy(() => import("./pages/Home"));
 const LoginPage = lazy(() => import("./pages/Login"));
@@ -46,6 +47,7 @@ function App() {
               <Route path="personal-info" element={<PersonalInfo />} />
               <Route path="public-info" element={<PublicInfo />} />
             </Route>
+            <Route path="/just-recipe" element={<JustRecipe />} />
             <Route path="*" element={<ErrorPage />} />
           </Routes>
         </Suspense>
