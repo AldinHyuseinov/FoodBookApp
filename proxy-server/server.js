@@ -11,11 +11,11 @@ app.get("/proxy", async (req, res) => {
   try {
     let { url } = req.query;
 
-    if (!url.startsWith("https://www.")) {
+    if (!url.startsWith("https://")) {
       if (url.startsWith("www.")) {
         url = `https://${url}`;
       } else {
-        url = `https://www.${url}`;
+        url = `https://${url}`;
       }
     }
 

@@ -1,0 +1,47 @@
+@import url("../page-container.css");
+
+.recipe-name {
+  padding-top: 1em;
+}
+
+.summary {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 10em;
+}
+
+section ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+section ul li {
+  font-size: 1.125rem;
+}
+
+.ingredient-list li::after {
+  content: "";
+  display: block;
+  margin-block: 0.5em;
+  border: 1px solid gray;
+}
+
+.direction-list li {
+  display: flex;
+  align-items: stretch;
+  gap: 1em;
+}
+
+.direction-list li p {
+  font-size: 2rem;
+  color: orange;
+}
+
+@media (width <= 1000px) {
+  .summary {
+    flex-wrap: wrap;
+    gap: 5em;
+  }
+}

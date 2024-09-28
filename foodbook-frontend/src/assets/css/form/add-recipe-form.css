@@ -1,12 +1,4 @@
-.page-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  max-width: 935px;
-  margin: 0 auto;
-  padding: 0.5em;
-  box-shadow: var(--basic-shadow);
-}
+@import url("../page-container.css");
 
 p {
   text-align: center;
