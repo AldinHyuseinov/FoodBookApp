@@ -6,7 +6,8 @@
   "scripts": {
     "frontend": "vite",
     "backend": "cd ../FoodBookBackend/ && gradlew build && gradlew bootRun",
-    "foodbook-app": "concurrently \"cd ../FoodBookBackend/ && gradlew build && gradlew bootRun\" \"vite\"",
+    "proxy-server": "cd ../proxy-server/ && npm start",
+    "foodbook-app": "concurrently \"cd ../FoodBookBackend/ && gradlew build && gradlew bootRun\" \"vite\" \"cd ../proxy-server/ && npm start\"",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
