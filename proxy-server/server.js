@@ -9,7 +9,16 @@ app.use(cors());
 
 app.get("/proxy", async (req, res) => {
   try {
-    const { url } = req.query;
+    let { url } = req.query;
+
+    if (!url.startsWith("https://www.")) {
+      if (url.startsWith("www.")) {
+        url = `https://${url}`;
+      } else {
+        url = `https://www.${url}`;
+      }
+    }
+
     const response = await axios.get(url);
     res.send(response.data);
   } catch (error) {
