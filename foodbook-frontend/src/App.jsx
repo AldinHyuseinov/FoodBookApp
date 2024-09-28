@@ -4,7 +4,6 @@ import Navigation from "./components/Navigation";
 import Loading from "./components/Loading";
 import Footer from "./components/Footer";
 import { getUserData } from "./services/userService";
-import JustRecipe from "./pages/JustRecipe";
 
 const HomePage = lazy(() => import("./pages/Home"));
 const LoginPage = lazy(() => import("./pages/Login"));
@@ -14,6 +13,7 @@ const RecipePage = lazy(() => import("./pages/Recipe"));
 const ProfilePage = lazy(() => import("./pages/Profile"));
 const PersonalInfo = lazy(() => import("./components/user_profile/PersonalInfo"));
 const PublicInfo = lazy(() => import("./components/user_profile/PublicInfo"));
+const JustRecipe = lazy(() => import("./pages/JustRecipe"));
 const ErrorPage = lazy(() => import("./pages/Error"));
 
 function App() {
