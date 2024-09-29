@@ -1,12 +1,15 @@
 import "../assets/css/recipe_extract/just-recipe.css";
 import "../assets/css/form/form.css";
-import { htmlToRecipe } from "../utils/extractRecipe";
+import { htmlToRecipe } from "../services/recipeSummaryService";
 import { useRef, useState } from "react";
 import RecipeSummary from "../components/just_recipe/RecipeSummary";
 import RecipeSummaryError from "../components/just_recipe/RecipeSummaryError";
+import useLoading from "../hooks/useLoading";
+import Loading from "../components/Loading";
 
 export default function JustRecipe() {
   const pageUrl = useRef("");
+  const [getSummary, isLoading] = useLoading(htmlToRecipe);
   const [summary, setSummary] = useState(null);
   const [error, setError] = useState(false);
 
@@ -14,13 +17,15 @@ export default function JustRecipe() {
     e.preventDefault();
 
     try {
-      const res = await htmlToRecipe(pageUrl.current.value);
+      const res = await getSummary(pageUrl.current.value);
       setSummary(res);
       setError(false);
     } catch (err) {
       setError(true);
       setSummary(null);
     }
+
+    pageUrl.current.value = "";
   };
 
   return (
@@ -38,7 +43,7 @@ export default function JustRecipe() {
         <button type="submit">Get Recipe</button>
       </form>
 
-      {summary && <RecipeSummary summary={summary} />}
+      {isLoading ? <Loading /> : summary && <RecipeSummary summary={summary} />}
       {error && <RecipeSummaryError />}
     </main>
   );

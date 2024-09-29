@@ -2,12 +2,14 @@
 
 .recipe-name {
   padding-top: 1em;
+  text-align: center;
 }
 
 .summary {
   display: flex;
   flex-direction: row;
   justify-content: center;
+  align-items: flex-start;
   gap: 10em;
 }
 

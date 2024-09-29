@@ -1,4 +1,8 @@
 export default function calculateTotalTime(time1, time2) {
+  if (time1 === "" || time2 === "") {
+    return;
+  }
+  
   const parsedTime1 = parseTime(time1);
   const parsedTime2 = parseTime(time2);
 

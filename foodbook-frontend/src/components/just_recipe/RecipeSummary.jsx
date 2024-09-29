@@ -4,7 +4,7 @@ export default function RecipeSummary({ summary }) {
   return (
     <div className="page-container">
       <header className="recipe-name">
-        <h1>{summary}</h1>
+        <h1>{summary.recipeName}</h1>
       </header>
 
       <main className="summary">
@@ -14,11 +14,9 @@ export default function RecipeSummary({ summary }) {
           </header>
 
           <ul className="ingredient-list">
-            <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Provident, eveniet!</li>
-            <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Provident, eveniet!</li>
-            <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Provident, eveniet!</li>
-            <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Provident, eveniet!</li>
-            <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Provident, eveniet!</li>
+            {summary.ingredients.map((ingredient) => (
+              <li key={ingredient}>{ingredient}</li>
+            ))}
           </ul>
         </section>
 

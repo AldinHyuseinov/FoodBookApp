@@ -12,7 +12,19 @@ import "../assets/css/recipe-page.css";
 export default function RecipePage() {
   const { id } = useParams();
   const [findRecipe, isLoading] = useLoading(getRecipe);
-  const [recipe, setRecipe] = useState({});
+  const [recipe, setRecipe] = useState({
+    description: "",
+    dateAdded: "",
+    photos: [],
+    ingredients: [],
+    directions: [],
+    servings: 0,
+    prepTime: "",
+    cookTime: "",
+    notes: [],
+    addedBy: "",
+  });
+
   useTitle(`${recipe.title} | FoodBook`);
 
   useEffect(() => {

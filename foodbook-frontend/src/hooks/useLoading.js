@@ -1,9 +1,17 @@
 import { useState } from "react";
 
 export default function useLoading(action) {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false); 
 
-  const doAction = (...args) => action(...args).finally(() => setLoading(false));
+  const doAction = async (...args) => {
+    setLoading(true); 
+    try {
+      const result = await action(...args);
+      return result;
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return [doAction, loading];
 }
