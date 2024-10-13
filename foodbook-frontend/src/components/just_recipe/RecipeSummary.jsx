@@ -26,29 +26,16 @@ export default function RecipeSummary({ summary }) {
           </header>
 
           <ul className="direction-list">
-            <li>
-              <p>1</p>
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Provident, eveniet!
-            </li>
-            <li>
-              <p>2</p>
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Provident, eveniet!
-            </li>
-            <li>
-              <p>3</p>
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Provident, eveniet!
-            </li>
-            <li>
-              <p>4</p>
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Provident, eveniet!
-            </li>
-            <li>
-              <p>5</p>
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Provident, eveniet!
-            </li>
+            {summary.directions.map((direction, i) => (
+              <li key={i}>
+                <p>{i + 1}</p>
+                {direction}
+              </li>
+            ))}
           </ul>
         </section>
       </main>
+      <p>May contain mistakes!</p>
     </div>
   );
 }

@@ -8,10 +8,20 @@ export async function htmlToRecipe(pageUrl) {
 
   const recipeName = getRecipeName(doc);
   const ingredients = getIngredients(doc);
+  const directions = getDirections(doc);
 
   const recipe = {};
   recipe.recipeName = recipeName;
   recipe.ingredients = ingredients;
+  recipe.directions = directions;
+
+  if (
+    recipe.recipeName === "" ||
+    recipe.ingredients.length === 0 ||
+    recipe.directions.length === 0
+  ) {
+    throw new Error();
+  }
 
   return recipe;
 }
@@ -34,9 +44,52 @@ function getRecipeName(doc) {
   return "";
 }
 
-function getIngredients(doc) {
-  const ingredients = [];
+function extractElements(doc, selectors) {
+  const results = [];
+  selectors.forEach((selector) => {
+    const elements = doc.querySelectorAll(selector);
+    elements.forEach((el) => {
+      results.push(el.innerText.trim());
+    });
+  });
+  return results;
+}
 
+function extractFromHeaders(doc, headerText, contentSelectors) {
+  const results = [];
+  const sectionHeaders = Array.from(doc.querySelectorAll("h2, h3, h4")).filter((header) =>
+    new RegExp(headerText, "i").test(header.innerText)
+  );
+
+  sectionHeaders.forEach((header) => {
+    let container = header.nextElementSibling;
+
+    while (
+      container &&
+      !(
+        container.tagName === "UL" ||
+        container.tagName === "OL" ||
+        container.tagName === "DIV" ||
+        container.tagName === "P"
+      )
+    ) {
+      const deepElements = container.querySelectorAll(contentSelectors);
+
+      if (deepElements.length > 0) {
+        deepElements.forEach((el) => {
+          results.push(el.innerText.trim());
+        });
+        break;
+      }
+
+      container = container.nextElementSibling;
+    }
+  });
+
+  return results;
+}
+
+function getIngredients(doc) {
   const listSelectors = [
     "ul[class*='ingredients'] li",
     "ul[class*='recipe-ingredients'] li",
@@ -50,59 +103,80 @@ function getIngredients(doc) {
     "ol[class*='ingredient-item'] li",
   ];
 
-  listSelectors.forEach((selector) => {
-    const elements = doc.querySelectorAll(selector);
-    elements.forEach((el) => {
-      ingredients.push(el.innerText.trim());
-    });
-  });
+  const fallbackSelectors = [
+    "div[class*='ingredients'] p",
+    "div[class*='recipe-ingredients'] p",
+    "div[class*='ingredient-list'] p",
+    "div[class*='ingredient-item'] p",
+    "div[class*='ingredients'] span",
+    "div[class*='ingredient-item'] span",
+    "p[class*='ingredients']",
+    "p[class*='recipe-ingredients']",
+    "span[class*='ingredients']",
+    "span[class*='ingredient']",
+  ];
+
+  let ingredients = extractElements(doc, listSelectors);
 
   if (ingredients.length === 0) {
-    const fallbackSelectors = [
-      "div[class*='ingredients'] p",
-      "div[class*='recipe-ingredients'] p",
-      "div[class*='ingredient-list'] p",
-      "div[class*='ingredient-item'] p",
-      "div[class*='ingredients'] span",
-      "div[class*='ingredient-item'] span",
-      "p[class*='ingredients']",
-      "p[class*='recipe-ingredients']",
-      "span[class*='ingredients']",
-      "span[class*='ingredient']",
-    ];
+    ingredients = extractElements(doc, fallbackSelectors);
+  }
 
-    fallbackSelectors.forEach((selector) => {
-      const elements = doc.querySelectorAll(selector);
-      elements.forEach((el) => {
-        ingredients.push(el.innerText.trim());
-      });
-    });
+  if (ingredients.length === 0) {
+    ingredients = extractFromHeaders(doc, "ingredients", "ul li, ol li, p, span");
   }
 
   const uniqueIngredients = [...new Set(ingredients)].filter(Boolean);
 
-  if (uniqueIngredients.length === 0) {
-    const sectionHeaders = Array.from(doc.querySelectorAll("h2, h3, h4")).filter((header) =>
-      /ingredients/i.test(header.innerText)
-    );
+  console.log(uniqueIngredients);
+  return uniqueIngredients;
+}
 
-    sectionHeaders.forEach((header) => {
-      let container = header.nextElementSibling;
+function getDirections(doc) {
+  const listSelectors = [
+    "ol[class*='instructions'] li",
+    "ol[class*='steps'] li",
+    "ul[class*='instructions'] li",
+    "ul[class*='steps'] li",
+    "ol[class*='recipe-directions'] li",
+    "ul[class*='recipe-directions'] li",
+    "ol[class*='instructions'] li p",
+    "ol[class*='steps'] li p",
+    "ul[class*='instructions'] li p",
+    "ul[class*='steps'] li p",
+    "ol[class*='recipe-directions'] li p",
+    "ul[class*='recipe-directions'] li p",
+    "ol[class*='instructions'] li p",
+    "ol[class*='steps'] li p",
+    "ul[class*='instructions'] li p",
+    "ul[class*='steps'] li p",
+    "ol[class*='recipe-directions'] li p",
+    "ul[class*='recipe-directions'] li p",
+  ];
 
-      while (container && !(container.tagName === "UL" || container.tagName === "OL")) {
-        const deepIngredients = container.querySelectorAll("ul li, ol li, p, span");
+  const fallbackSelectors = [
+    "div[class*='instructions'] p",
+    "div[class*='steps'] p",
+    "div[class*='recipe-directions'] p",
+    "p[class*='instructions']",
+    "p[class*='steps']",
+    "p[class*='recipe-directions']",
+    "div[class*='instructions'] span",
+    "div[class*='steps'] span",
+  ];
 
-        if (deepIngredients.length > 0) {
-          deepIngredients.forEach((el) => {
-            ingredients.push(el.innerText.trim());
-          });
-          break;
-        }
-        container = container.nextElementSibling;
-      }
-    });
+  let directions = extractElements(doc, listSelectors);
+
+  if (directions.length === 0) {
+    directions = extractElements(doc, fallbackSelectors);
   }
 
-  const finalIngredients = [...new Set(ingredients)].filter(Boolean);
-  return finalIngredients;
+  if (directions.length === 0) {
+    directions = extractFromHeaders(doc, "instructions|directions|steps", "ul li, ol li, p, span");
+  }
+
+  const uniqueDirections = [...new Set(directions)].filter(Boolean);
+
+  console.log(uniqueDirections);
+  return uniqueDirections;
 }
